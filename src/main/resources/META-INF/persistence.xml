@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+        http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
+
+      <!-- A JPA Persistence Unit -->
+      <persistence-unit name="trainingMgrJpaUnit" transaction-type="RESOURCE_LOCAL">
+              <provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+              <!-- JPA entities must be registered here -->
+              <class>com.mgr.training.data.User</class>
+              <class>com.mgr.training.data.Employee</class>
+              <class>com.mgr.training.data.Training</class>
+              <class>com.mgr.training.data.TrainingMetadata</class>
+
+			  <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+              <properties>
+                      <!-- vendor-specific properties go here -->
+              </properties>
+      </persistence-unit>
+
+</persistence>

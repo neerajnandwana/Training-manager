@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>My AngularJS App</title>
+        <link rel="stylesheet" href="../lib/bootstrap-3.0.3/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="../css/app.css"/>
+		<!-- When you load angular at the bottom, you need to create the "ng-cloak" rules yourself -->
+		<style type="text/css">
+		    @charset "UTF-8";
+		    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+		        display: none;
+		    }
+		
+		    ng\:form {
+		        display: block;
+		    }
+		</style>
+    </head>
+    <body ng-controller="AppCtrl">
+	    <div class="badge loading-mask" ng-class="alertType" ng-show="loading">{{alertMsg}}</div>
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-default navbar-fixed-top app-main-nav" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Training Manager</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav" app-nav-menu="active">
+                        <li><a href="#/home">Home</a></li>
+                        <li><a href="#/employee">Employee</a></li>
+                        <li><a href="#/training">Training</a></li>
+                        <li><a href="#/user">User</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#"><span class="glyphicon glyphicon-envelope notification-icon"></span><span class="badge notification-alert">14</span>&nbsp;</a></li>
+                        <li><a>|</a></li>
+                        <li><a href="../logout">Logout</a></li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+
+		<div id="wrap">
+	        <div class="container">
+	            <!-- Main component for a primary marketing message or call to action -->
+	            <div ng-view></div>
+	        </div> <!-- /container -->
+		</div>
+		<!-- Footer -->
+		<div id="footer">
+			<div class="container">
+				<p class="text-muted">App: v<span app-version></span></p>
+			</div>
+			
+        <!-- JS frameworks -->
+        <script src="../lib/jquery/jquery-1.10.2.min.js"></script>
+        <script src="../lib/bootstrap-3.0.3/js/bootstrap.min.js"></script>
+        <script src="../lib/angular/angular.js"></script>
+        <script src="../lib/angular/angular-route.js"></script>
+        
+        <!-- Application Files -->
+        <script src="../js/app.js"></script>
+        <script src="../js/config.js"></script>
+        <!-- Controllers -->
+        <script src="../js/controllers/AppCtrl.js"></script>
+        <script src="../js/controllers/HomeCtrl.js"></script>
+        <script src="../js/controllers/EmployeeCtrl.js"></script>
+        <script src="../js/controllers/TrainingCtrl.js"></script>
+        <script src="../js/controllers/UserCtrl.js"></script>
+        <!-- Services -->
+        <script src="../js/services/commonService.js"></script>
+        <script src="../js/services/employeeService.js"></script>
+        <script src="../js/services/trainingService.js"></script>
+        <script src="../js/services/userService.js"></script>
+        <!-- Directives -->
+        <script src="../js/directives/appNavMenu.js"></script>
+        <script src="../js/directives/confirmationNeeded.js"></script>
+        <script src="../js/directives/version.js"></script>
+        <!-- Filters -->
+        <script src="../js/filters/filters.js"></script>
+    </body>
+</html>

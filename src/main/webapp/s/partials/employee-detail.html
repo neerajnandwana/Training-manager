@@ -1,0 +1,46 @@
+<h1>Employee Detail</h1>
+<form name="employeeForm" class="form-horizontal" role="form" >
+	<div class="form-group" ng-class="{'has-error': employeeForm.id.$invalid}">
+		<label class="col-sm-2 control-label" for="id">Employee Id</label> 
+		<div class="col-sm-10">
+			<input type="text" name="id" ng-model="employee.id" class="form-control" required> 
+			<span ng-show="employeeForm.id.$error.required" class="help-block">Required</span>
+		</div>
+	</div>
+	
+	<div class="form-group" ng-class="{'has-error': employeeForm.name.$invalid}">
+		<label class="col-sm-2 control-label" for="name">Name</label> 
+		<div class="col-sm-10">
+			<input type="text" name="name" ng-model="employee.name" class="form-control" required> 
+			<span ng-show="employeeForm.name.$error.required" class="help-block">Required</span>
+		</div>
+	</div>
+
+	<div class="form-group" ng-class="{'has-error': employeeForm.email.$invalid}">
+		<label class="col-sm-2 control-label" for="email">Email</label> 
+		<div class="col-sm-10">
+			<input type="email" name="email" ng-model="employee.email" class="form-control" required> 
+			<span ng-show="employeeForm.email.$error.required" class="help-block">Required</span> 
+			<span ng-show="employeeForm.email.$error.email" class="help-block">Not a Email</span>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="level">Level</label> 
+		<div class="col-sm-10">
+			<select name="level" ng-model="employee.level" ng-options="level.value as level.name for level in empLevels" class="form-control"></select>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="processName">Process Name</label> 
+		<div class="col-sm-10">
+			<input type="text" name="processName" ng-model="employee.processName" class="form-control"> 
+		</div>
+	</div>
+
+	<br> 
+	<a href="#/employee" class="btn btn-default">Cancel</a>
+	<button ng-click="save()" ng-disabled="employeeForm.$invalid" class="btn btn-primary">Save</button>
+	<button ng-click="destroy(employee.id)" ng-show="employee.$edit" confirmation-needed="Are you really want to delete?" class="btn btn-danger">Delete</button>
+</form>

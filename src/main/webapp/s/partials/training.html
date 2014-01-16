@@ -1,0 +1,28 @@
+<div class="row">
+	<div class="col-lg-6">
+		<h1>Available Trainings</h1>
+	</div>
+	<div class="col-lg-6">
+		<input type="text" ng-model="search" class="form-control grid-search" placeholder="Search"/>
+	</div>
+</div>
+<table class="table table-hover table-striped">
+	<thead>
+		<tr>
+			<th>Training ID</th>
+			<th>Title</th>
+			<th>Description</th>
+			<th><a href="#/training/new"><i class="glyphicon glyphicon-plus"></i></a></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="training in trainings | filter:search | orderBy:'trainingId'">
+			<td><a href="#/training/view/{{training.trainingId}}">{{training.trainingId}}</a></td>
+			<td>{{training.trainingTitle}}</td>
+			<td>{{training.description}}</td>
+			<td>
+				<a href="#/training/edit/{{training.trainingId}}"><i class="glyphicon glyphicon-pencil"></i></a>
+			</td>
+		</tr>
+	</tbody>
+</table>

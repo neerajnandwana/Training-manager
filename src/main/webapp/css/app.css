@@ -1,0 +1,78 @@
+html,
+body {
+  height: 100%;
+  padding-top: 30px;
+}
+h1, h2, h3, h4 {
+	color: #005689;
+}
+
+/* scroll bar*/
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #ddd;
+}
+
+/* custom navbar css */
+.app-main-nav .navbar-nav>.active>a, 
+.app-main-nav .navbar-nav>.active>a:hover, 
+.app-main-nav .navbar-nav>.active>a:focus {
+	color: #d61d00;
+	border-bottom: 3px solid #dd4b39;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto;
+  margin: 0 auto -60px;
+  padding: 0 0 80px;
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+.container .text-muted {
+  margin: 20px 0;
+}
+
+.loading-mask {	
+	background-color: #f0ad4e;
+	position: fixed;
+	top: 40px;
+	left: 47%;
+	z-index: 9990;
+	padding: 5px 15px;
+}
+
+.loading-mask-success {	
+	background-color: #5bc0de;
+}
+
+.loading-mask-error {	
+	background-color: #d9534f;
+}
+
+.notification-alert {
+    background-color: #428bca;
+    position: absolute;
+    top: 5px;
+    left: 30px;
+}
+
+.notification-icon {
+    #font-size: 24px
+}
+
+.grid-search {	
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+

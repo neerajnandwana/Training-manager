@@ -1,0 +1,79 @@
+<h1>Training Detail</h1>
+<form name="trainingForm" class="form-horizontal" role="form" >
+	<div class="form-group" ng-class="{'has-error': trainingForm.trainingId.$invalid}">
+		<label class="col-sm-2 control-label" for="trainingId">Training Id</label> 
+		<div class="col-sm-10">
+			<input type="text" name="trainingId" ng-model="training.trainingId" class="form-control" required> 
+			<span ng-show="trainingForm.trainingId.$error.required" class="help-block">Required</span>
+		</div>
+	</div>
+	
+	<div class="form-group" ng-class="{'has-error': trainingForm.trainingTitle.$invalid}">
+		<label class="col-sm-2 control-label" for="trainingTitle">Title</label> 
+		<div class="col-sm-10">
+			<input type="text" name="trainingTitle" ng-model="training.trainingTitle" class="form-control" required> 
+			<span ng-show="trainingForm.trainingTitle.$error.required" class="help-block">Required</span>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="mode">Mode</label> 
+		<div class="col-sm-10">
+			<select name="mode" ng-model="training.mode" ng-options="mode for mode in trainingModes" class="form-control"></select>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="kind">Kind</label> 
+		<div class="col-sm-10">
+			<select name="kind" ng-model="training.kind" ng-options="kind for kind in trainingKinds" class="form-control"></select>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="numberOfHours">No. of Hours</label> 
+		<div class="col-sm-10">
+			<input type="text" name="numberOfHours" ng-model="training.numberOfHours" class="form-control"> 
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="createdOn">Created On</label> 
+		<div class="col-sm-10">
+			<input type="text" name="createdOn" ng-model="training.createdOn" class="form-control"> 
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="trainingStartDate">Training Start Date</label> 
+		<div class="col-sm-10">
+			<input type="text" name="trainingStartDate" ng-model="training.trainingStartDate" class="form-control"> 
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="trainingEndDate">Training End Date</label> 
+		<div class="col-sm-10">
+			<input type="text" name="trainingEndDate" ng-model="training.trainingEndDate" class="form-control"> 
+		</div>
+	</div>
+	
+	<div class="form-group" ng-class="{'has-error': trainingForm.description.$invalid}">
+		<label class="col-sm-2 control-label" for="description">Description</label> 
+		<div class="col-sm-10">
+			<textarea name="description" ng-model="training.description" class="form-control" rows="3"></textarea>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="level">Level</label> 
+		<div class="col-sm-10">
+			<select name="level" ng-model="training.level" ng-options="level.value as level.name for level in empLevels" class="form-control" multiple></select>
+		</div>
+	</div>
+
+	<br> 
+	<a href="#/training" class="btn btn-default">Cancel</a>
+	<button ng-click="save(training.trainingId)" ng-disabled="trainingForm.$invalid" class="btn btn-primary">Save</button>
+	<button ng-click="destroy(training.trainingId)" ng-show="training.$edit" confirmation-needed="Are you really want to delete?" class="btn btn-danger">Delete</button>
+</form>

@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>trainingmgr</groupId>
+	<artifactId>trainingmgr</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<properties>
+		<java.version>1.6</java.version>
+		<servlet.version>2.4</servlet.version>
+		<jsp.version>2.1</jsp.version>
+		<jstl.version>1.2</jstl.version>
+		<taglibs.version>1.1.2</taglibs.version>
+		<elimpl.version>2.2</elimpl.version>
+		<jsf.version>2.1.22</jsf.version>
+
+		<guice.version>3.0</guice.version>
+
+		<jersey.version>1.18</jersey.version>
+		<jackson.version>2.3.1</jackson.version>
+		<jacksonafterburner.version>2.2.0</jacksonafterburner.version>
+
+		<hibernate.version>4.2.8.Final</hibernate.version>
+		<hibernatevalidator.version>5.0.2.Final</hibernatevalidator.version>
+		<mysqlconnector.version>5.1.27</mysqlconnector.version>
+		<hsqldb.version>1.8.0.10</hsqldb.version>
+		<cglibnodep.version>2.2.2</cglibnodep.version>
+
+		<junit.version>4.11</junit.version>
+		<jcipannotations.version>1.0</jcipannotations.version>
+		<jsr305.version>1.3.9</jsr305.version>
+		<guava.version>15.0</guava.version>
+		<jodatime.version>2.3</jodatime.version>
+		<slf4j.version>1.7.0</slf4j.version>
+		<commonlang3.version>3.1</commonlang3.version>
+		<commonfileupload.version>1.3</commonfileupload.version>
+		<commonvalidator.version>1.4.0</commonvalidator.version>
+		<commonconfig.version>1.10</commonconfig.version>
+		<metrics.version>3.0.1</metrics.version>
+	</properties>
+
+	<repositories>
+		<!-- Spring Milestone Repository -->
+		<repository>
+			<id>spring-milestone</id>
+			<name>Spring Milestone Repository</name>
+			<url>http://maven.springframework.org.s3.amazonaws.com/external</url>
+		</repository>
+		<repository>
+			<id>java.net</id>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+
+		<!-- Maven Repository -->
+		<repository>
+			<id>maven.repository</id>
+			<name>Another Maven Repository</name>
+			<url>http://repo1.maven.org/maven2/</url>
+		</repository>
+
+		<!-- Another Maven Repository -->
+		<repository>
+			<id>com.mvnrepository</id>
+			<name>Maven Repository</name>
+			<url>http://mvnrepository.com/artifact/</url>
+		</repository>
+		<repository>
+			<id>nexus</id>
+			<name>Nexus Repos</name>
+			<url>https://maven.nuxeo.org/nexus/content/repositories/public</url>
+		</repository>
+		<repository>
+			<id>jboss-maven2-release-repository</id>
+			<name>JBoss Sonatype OSS</name>
+			<url>https://oss.sonatype.org/content/repositories/JBoss</url>
+		</repository>
+		<repository>
+			<id>eaio.com</id>
+			<url>http://eaio.com/maven2</url>
+		</repository>
+		<repository>
+			<id>JBoss repository</id>
+			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+		</repository>
+
+		<!-- Sonatype Releases -->
+		<repository>
+			<id>sonatype-releases</id>
+			<name>Sonatype Releases</name>
+			<url>https://oss.sonatype.org/content/repositories/releases</url>
+		</repository>
+
+		<!-- Glassfish Snapshots -->
+		<repository>
+			<id>glassfish-maven-repository.dev.java.net</id>
+			<name>GlassFish Maven Repository</name>
+			<url>http://download.java.net/maven/glassfish</url>
+		</repository>
+
+		<!-- Typesafe Repository -->
+		<repository>
+			<id>typesafe</id>
+			<name>Typesafe Repository</name>
+			<url>http://repo.typesafe.com/typesafe/releases/</url>
+		</repository>
+
+		<!-- Spring Releases -->
+		<repository>
+			<id>spring-release</id>
+			<name>Spring Maven Release Repository</name>
+			<url>http://repo.springsource.org/libs-release</url>
+		</repository>
+
+		<!-- Tomcat 7 plugin repo -->
+		<repository>
+			<id>people.apache.snapshots</id>
+			<url>http://repository.apache.org/content/groups/snapshots-group/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<!-- JSTL -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${servlet.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>${jsp.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>${taglibs.version}</version>
+		</dependency>
+
+		<!-- Google collections -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+
+		<!-- Apache commons -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commonlang3.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>${commonfileupload.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>${commonvalidator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>${commonconfig.version}</version>
+		</dependency>
+
+
+		<!-- Guice: Dependency injection -->
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-servlet</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-multibindings</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-persist</artifactId>
+			<version>${guice.version}</version>
+		</dependency>
+
+
+		<!-- JSON API -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-afterburner</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+
+		<!-- REST API -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-guice</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+
+
+		<!-- Persistence -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<!-- for JPA, use hibernate-entitymanager instead of hibernate-core -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernatevalidator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysqlconnector.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>${hsqldb.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>${cglibnodep.version}</version>
+		</dependency>
+
+
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<!-- Date Time API -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${jodatime.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.jcip</groupId>
+			<artifactId>jcip-annotations</artifactId>
+			<version>${jcipannotations.version}</version>
+		</dependency>
+		
+		<!-- instumentation api -->
+		<dependency>
+			<groupId>com.codahale.metrics</groupId>
+			<artifactId>metrics-core</artifactId>
+			<version>${metrics.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.codahale.metrics</groupId>
+			<artifactId>metrics-jvm</artifactId>
+			<version>${metrics.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.codahale.metrics</groupId>
+			<artifactId>metrics-jersey</artifactId>
+			<version>${metrics.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.codahale.metrics</groupId>
+			<artifactId>metrics-json</artifactId>
+			<version>${metrics.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.codahale.metrics</groupId>
+			<artifactId>metrics-servlets</artifactId>
+			<version>${metrics.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		<outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>3.0.8</version>
+				<configuration>
+					<changeLogFile>src/main/db/changelog/app-changelog-master.xml</changeLogFile>
+					<driver>com.mysql.jdbc.Driver</driver>
+					<url>jdbc:mysql://localhost:3306/trainingmgr</url>
+					<username>root</username>
+					<password>welcome</password>
+					<dropFirst>true</dropFirst>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
