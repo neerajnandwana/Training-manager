@@ -304,7 +304,7 @@
 			<version>${jcipannotations.version}</version>
 		</dependency>
 		
-		<!-- instumentation api -->
+		<!-- instrumentation api -->
 		<dependency>
 			<groupId>com.codahale.metrics</groupId>
 			<artifactId>metrics-core</artifactId>
