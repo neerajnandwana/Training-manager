@@ -1,31 +1,42 @@
 'use strict';
 
-angular.module('myApp.services').factory('commonService', ['$http','$q', function($http, $q){
+app.services.factory('baseService', ['$http', '$q', function($http, $q){
     var serviceBase = '../r/',
-	factory = {};
+		factory = {};
 
-	factory.getResource = function (resource){
-		return $http.get(serviceBase + resource).then(function (data) {
-	        return {
-	            results: data.data
-	        };
-	    }, function (error) {
-	        console.log(arguments);
-	    });
+    function normalizeSubresource(res){
+    	return res ? '/'+res : '';
+    }
+    
+	factory.getResourceFn = function (resource){
+		return function(subresource){
+			var service = serviceBase + resource + normalizeSubresource(subresource);
+			return $http.get(service).then(function (response) {
+		        return { results: response.data.result };
+		    }, function (error) {
+		        console.log(error);
+		    });			
+		};
 	};
 	
-	factory.destroyResource = function (resource){
-	    return $http.delete(serviceBase + resource).then(function (results) {
-	        return results.data;
-	    }, function (error) {
-	        alert(error.message);
-	    });
+	factory.destroyResourceFn = function (resource){
+		return function(subresource){
+			var service = serviceBase + resource + normalizeSubresource(subresource);
+		    return $http.delete(service).then(function (response) {
+		        return response.data.result;
+		    }, function (error) {
+		    	console.log(error);
+		    });
+		};
 	};
 	
-	factory.postResource = function (resource, data){
-	    return $http.post(serviceBase + resource, data).then(function (results) {
-	        return results.data;
-	    });
+	factory.postResourceFn = function (resource){
+		return function(subresource, data){
+			var service = serviceBase + resource + normalizeSubresource(subresource);
+		    return $http.post(service, data).then(function (response) {
+		        return response.data.result;
+		    });			
+		};
 	};
 	
 	return factory;

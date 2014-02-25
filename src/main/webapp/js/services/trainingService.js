@@ -1,19 +1,12 @@
 'use strict';
 
-angular.module('myApp.services').factory('trainingService', ['commonService', function(commonService){
+app.services.factory('trainingService', ['baseService', function(baseService){
     var factory = {};
         
-    factory.getTrainings = function(){
-    	return commonService.getResource('training');
-    };
-    
-    factory.getTraining = function(id){
-    	return commonService.getResource('training/'+id);
-    };
-    
-    factory.destroyTraining = function(id){
-    	return commonService.destroyResource('training/'+id);
-    };
+    factory.getTrainings = baseService.getResourceFn('training');    
+    factory.getTraining = baseService.getResourceFn('training');    
+    factory.destroyTraining = baseService.destroyResourceFn('training');
+    factory.update = baseService.postResourceFn('training');
 
     return factory;
 }]);

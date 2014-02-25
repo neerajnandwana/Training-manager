@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	lang="en" ng-app="loginApp">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>My App</title>
+	<link rel="stylesheet" href="lib/bootstrap-3.0.3/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/app.css" />
+</h:head>
+
+<body>
+	<div class="container">
+           <!-- Main component for a primary marketing message or call to action -->
+           <div ng-view></div>
+	</div>
+	<script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular-route.js"></script>
+	<script type="text/javascript">
+		angular.module('loginApp', ['ngRoute']).
+			config(['$routeProvider', function($routeProvider) {
+			  $routeProvider.
+			    when('/login',   	{templateUrl: 'partials/login.html',		controller: 'loginCtrl'}).
+			    when('/register',	{templateUrl: 'partials/register.html', 	controller: 'registerCtrl'}).
+			    otherwise({redirectTo: '/login'});
+			}]).
+          	controller('loginCtrl', [ '$scope', '$location', function($scope, $location) {
+				var params = $location.search();
+				$scope.err = params.err || '';				
+				$scope.demoUserPassword = '(Demo log in - "x"/"x")';
+			}]).
+          	controller('registerCtrl', [ '$scope', '$location', function($scope, $location) {
+			}]);
+	</script>
+</body>
+</html>

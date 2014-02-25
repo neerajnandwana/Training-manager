@@ -3,7 +3,7 @@
 		<h1>Available Trainings</h1>
 	</div>
 	<div class="col-lg-6">
-		<input type="text" ng-model="search" class="form-control grid-search" placeholder="Search"/>
+		<input type="text" data-ng-model="search" class="form-control grid-search" placeholder="Search"/>
 	</div>
 </div>
 <table class="table table-hover table-striped">
@@ -16,12 +16,16 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="training in trainings | filter:search | orderBy:'trainingId'">
+		<tr data-ng-repeat="training in trainings | filter:search | orderBy:'trainingId'" class="slide-animation">
 			<td><a href="#/training/view/{{training.trainingId}}">{{training.trainingId}}</a></td>
 			<td>{{training.trainingTitle}}</td>
 			<td>{{training.description}}</td>
 			<td>
 				<a href="#/training/edit/{{training.trainingId}}"><i class="glyphicon glyphicon-pencil"></i></a>
+				<span>&nbsp;&nbsp;</span>				
+				<a href="#/training" data-ng-click="destroy(training.trainingId)"  data-confirmation-needed="Are you really want to delete training {{training.trainingId}}?">
+					<i class="glyphicon glyphicon-trash"></i>
+				</a>
 			</td>
 		</tr>
 	</tbody>

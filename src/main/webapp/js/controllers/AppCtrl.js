@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.controllers').controller('AppCtrl', ['$scope', '$rootScope', function($scope, $rootScope){
+app.controllers.controller('AppCtrl', ['$scope', '$rootScope', function($scope, $rootScope){
 	$rootScope.empLevels = [ 
 		{name: 'C-1', value: 'c1'},
 		{name: 'C-2', value: 'c2'},
@@ -11,4 +11,11 @@ angular.module('myApp.controllers').controller('AppCtrl', ['$scope', '$rootScope
 		{name: 'C-7', value: 'c7'} ];
 	$rootScope.trainingKinds = ['Analysis','Business Awareness','Finance','Soft Skills','System and Tools'];
 	$rootScope.trainingModes = ['Class Room','E Learning','Vertual'];
+	
+	$scope.loading = 0;
+	$scope.notification = {
+			title: "messages",
+			content: "lots of messages",
+			counter: 14
+	};
 }]);

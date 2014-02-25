@@ -1,49 +1,48 @@
-html,
-body {
-  height: 100%;
-  padding-top: 30px;
+html,body {
+	height: 100%;
+	padding-top: 30px;
 }
-h1, h2, h3, h4 {
+
+h1,h2,h3,h4 {
 	color: #005689;
 }
 
 /* scroll bar*/
 ::-webkit-scrollbar {
-    width: 10px;
+	width: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background: #ddd;
+	border-radius: 10px;
+	background: #ddd;
 }
 
 /* custom navbar css */
-.app-main-nav .navbar-nav>.active>a, 
-.app-main-nav .navbar-nav>.active>a:hover, 
-.app-main-nav .navbar-nav>.active>a:focus {
+.app-main-nav .navbar-nav>.active>a,.app-main-nav .navbar-nav>.active>a:hover,.app-main-nav .navbar-nav>.active>a:focus
+	{
 	color: #d61d00;
 	border-bottom: 3px solid #dd4b39;
 }
 
 /* Wrapper for page content to push down footer */
 #wrap {
-  min-height: 100%;
-  height: auto;
-  margin: 0 auto -60px;
-  padding: 0 0 80px;
+	min-height: 100%;
+	height: auto;
+	margin: 0 auto -60px;
+	padding: 0 0 80px;
 }
 
 /* Set the fixed height of the footer here */
 #footer {
-  height: 60px;
-  background-color: #f5f5f5;
+	height: 60px;
+	background-color: #f5f5f5;
 }
 
 .container .text-muted {
-  margin: 20px 0;
+	margin: 20px 0;
 }
 
-.loading-mask {	
+.loading-mask {
 	background-color: #f0ad4e;
 	position: fixed;
 	top: 40px;
@@ -52,27 +51,59 @@ h1, h2, h3, h4 {
 	padding: 5px 15px;
 }
 
-.loading-mask-success {	
+.loading-mask-success {
 	background-color: #5bc0de;
 }
 
-.loading-mask-error {	
+.loading-mask-error {
 	background-color: #d9534f;
 }
 
 .notification-alert {
-    background-color: #428bca;
-    position: absolute;
-    top: 5px;
-    left: 30px;
+	background-color: #428bca;
+	position: absolute;
+	top: 5px;
+	left: 30px;
 }
 
-.notification-icon {
-    #font-size: 24px
+.notification-icon { 
+	font-size: 24px
 }
 
-.grid-search {	
+.grid-search {
 	margin-top: 20px;
 	margin-bottom: 10px;
 }
 
+
+/* Animations */
+.slide-animation.ng-enter,.slide-animation.ng-leave {
+	-webkit-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+	-moz-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+	-o-transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+	transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+.slide-animation.ng-enter {
+	opacity: 0;
+	left: 100px;
+	position: relative;
+}
+
+.slide-animation.ng-enter.ng-enter-active {
+	left: 0;
+	opacity: 1;
+}
+
+.slide-animation.ng-leave {
+	opacity: 0;
+}
+
+.slide-animation.ng-leave.ng-leave-active {
+	left: -100px;
+	opacity: 0;
+}

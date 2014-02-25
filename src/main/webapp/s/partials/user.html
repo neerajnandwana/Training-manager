@@ -3,7 +3,7 @@
 		<h1>Users</h1>
 	</div>
 	<div class="col-lg-6">
-		<input type="text" ng-model="search" class="form-control grid-search" placeholder="Search"/>
+		<input type="text" data-ng-model="search" class="form-control grid-search" placeholder="Search"/>
 	</div>
 </div>
 <table class="table table-hover table-striped">
@@ -16,11 +16,16 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="user in users | filter:search | orderBy:'userId'">
+		<tr data-ng-repeat="user in users | filter:search | orderBy:'userId'" class="slide-animation">
 			<td><a href="#/user/view/{{user.userId}}">{{user.userId}}</a></td>
 			<td>{{user.displayName}}</td>
 			<td>{{user.createdOn | date:'medium'}}</td>
-			<td><a href="#/user/edit/{{user.userId}}"><i class="glyphicon glyphicon-pencil"></i></a>
+			<td>
+				<a href="#/user/edit/{{user.userId}}"><i class="glyphicon glyphicon-pencil"></i></a>
+				<span>&nbsp;&nbsp;</span>				
+				<a href="#/user" data-ng-click="destroy(user.userId)"  data-confirmation-needed="Are you really want to delete user {{user.userId}}?">
+					<i class="glyphicon glyphicon-trash"></i>
+				</a>
 			</td>
 		</tr>
 	</tbody>

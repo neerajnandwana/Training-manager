@@ -1,19 +1,12 @@
 'use strict';
 
-angular.module('myApp.services').factory('userService', ['commonService', function(commonService){
+app.services.factory('userService', ['baseService', function(baseService){
     var factory = {};
         
-    factory.getUsers = function(){
-    	return commonService.getResource('user');
-    };
-    
-    factory.getUser = function(id){
-    	return commonService.getResource('user/'+id);
-    };
-    
-    factory.destroyUser = function(id){
-    	return commonService.destroyResource('user/'+id);
-    };
+    factory.getUsers = baseService.getResourceFn('user');    
+    factory.getUser = baseService.getResourceFn('user');    
+    factory.destroyUser = baseService.destroyResourceFn('user');
+    factory.update = baseService.postResourceFn('user');
 
     return factory;
 }]);

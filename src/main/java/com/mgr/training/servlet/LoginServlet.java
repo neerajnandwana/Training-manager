@@ -15,7 +15,7 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import com.mgr.training.AppSession;
 import com.mgr.training.data.User;
-import com.mgr.training.service.UserService;
+import com.mgr.training.store.UserStore;
 import com.mgr.training.util.Const;
 import com.mgr.training.util.Routes;
 import com.mgr.training.util.Utils;
@@ -24,12 +24,12 @@ import com.mgr.training.util.Utils;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final UserService userService;
+	private final UserStore userStore;
 	private Provider<AppSession> sessionProvider;
 
 	@Inject
-	public LoginServlet(UserService userService, Provider<AppSession> sessionProvider) {
-		this.userService = userService;
+	public LoginServlet(UserStore userStore, Provider<AppSession> sessionProvider) {
+		this.userStore = userStore;
 		this.sessionProvider = sessionProvider;
 	}
 
@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
 			User user = session.getUser();
 			if (!session.isLoggedIn()) {
 				try {
-					user = userService.getByCredential(userId, userPass).get();
+					user = userStore.getByCredential(userId, userPass);
 				} catch (Exception e) {
 					Throwables.propagate(e);
 				}

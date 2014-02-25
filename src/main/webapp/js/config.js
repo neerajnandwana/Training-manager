@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp').config(['$routeProvider', function($routeProvider) {
+app.App.config(['$routeProvider', '$datepickerProvider', function($routeProvider, $datepickerProvider) {
 	$routeProvider.
 		when('/home',   			{templateUrl: 'partials/home.html',				controller: 'HomeCtrl'}).
 		when('/training',			{templateUrl: 'partials/training.html', 		controller: 'TrainingCtrl'}).
@@ -16,4 +16,9 @@ angular.module('myApp').config(['$routeProvider', function($routeProvider) {
 		when('/user/view/:id',	  	{templateUrl: 'partials/user-detail.html', 		controller: 'UserCtrl'}).
 		when('/user/edit/:id',	  	{templateUrl: 'partials/user-detail.html', 		controller: 'UserCtrl'}).
 		otherwise({redirectTo: '/home'});
+	
+	angular.extend($datepickerProvider.defaults, {
+		dateFormat: 'dd/MM/yyyy',
+		startWeek: 1
+	});
 }]);

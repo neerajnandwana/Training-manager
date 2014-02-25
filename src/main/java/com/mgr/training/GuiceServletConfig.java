@@ -24,6 +24,7 @@ import com.mgr.training.data.SeedDummyData;
 import com.mgr.training.filter.CharsetEncodingFilter;
 import com.mgr.training.filter.DisableUrlSessionFilter;
 import com.mgr.training.filter.SecurityFilter;
+import com.mgr.training.metrics.AppInstrumentationModule;
 import com.mgr.training.rest.RestModule;
 import com.mgr.training.servlet.InsertDummyData;
 import com.mgr.training.servlet.LoginServlet;
@@ -43,7 +44,8 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 		if (injector == null) {
 			final Module applicationModule = initApplicationModules();
 			final Module servletModule = initApplicationServletModule();
-			injector = Guice.createInjector(applicationModule, servletModule);
+			final Module instrumentationModule = new AppInstrumentationModule();
+			injector = Guice.createInjector(applicationModule, servletModule, instrumentationModule);
 		}
 		return injector;
 	}
@@ -90,9 +92,10 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 	@Singleton
 	public ObjectMapper provideJacksonMapper() {
 		ObjectMapper mapper = new ObjectMapper();
-		//AfterburnerModule uses bytecode generation to further speed up data binding 
-		//(+30-40% throughput for serialization, deserialization)
-		mapper.registerModule(new AfterburnerModule()); 
+		// AfterburnerModule uses bytecode generation to further speed up data
+		// binding
+		// (+30-40% throughput for serialization, deserialization)
+		mapper.registerModule(new AfterburnerModule());
 		return mapper;
 	}
 }

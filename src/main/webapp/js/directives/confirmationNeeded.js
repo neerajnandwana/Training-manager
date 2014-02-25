@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.directives').directive('confirmationNeeded', function () {
+app.directives.directive('confirmationNeeded', function () {
 	return {
 		priority: 1,
 	    terminal: true,
@@ -32,8 +32,7 @@ angular.module('myApp.directives').directive('confirmationNeeded', function () {
 			element.bind('click',function (e) {
 				$template.modal('show');
 				e.stopPropagation();
-				e.preventDefault();
-				return;
+				e.preventDefault();				
 			});
 		}
 	};

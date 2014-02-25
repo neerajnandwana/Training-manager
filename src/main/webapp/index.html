@@ -1,27 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="loginApp">
+<html lang="en" data-ng-app="loginApp">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>My App</title>
 	<link rel="stylesheet" href="lib/bootstrap-3.0.3/css/bootstrap.min.css" />
-	<style type="text/css">
-		@charset "UTF-8";
-		[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak {
-			display: none;
-		}
-		
-		ng\:form {
-			display: block;
-		}
-	</style>
+    <link rel="stylesheet" href="lib/angular-1.2.12/angular-csp.css"/>
+	<link rel="stylesheet" href="css/app.css" />
 </head>
 <body>
 	<div class="container">
            <!-- Main component for a primary marketing message or call to action -->
-           <div ng-view></div>
+           <div data-ng-view data-ng-cloak></div>
 	</div>
-	<script src="lib/angular/angular.js"></script>
-    <script src="lib/angular/angular-route.js"></script>
+    <script src="lib/angular-1.2.12/angular.min.js"></script>
+    <script src="lib/angular-1.2.12/angular-route.min.js"></script>
 	<script type="text/javascript">
 		angular.module('loginApp', ['ngRoute']).
 			config(['$routeProvider', function($routeProvider) {
@@ -33,7 +25,7 @@
           	controller('loginCtrl', [ '$scope', '$location', function($scope, $location) {
 				var params = $location.search();
 				$scope.err = params.err || '';				
-				$scope.demoUserPassword = '(Demo log in - "x"/"x")';
+				$scope.demoUserPassword = '(Demo log in - "100"/"welcome100")';
 			}]).
           	controller('registerCtrl', [ '$scope', '$location', function($scope, $location) {
 			}]);

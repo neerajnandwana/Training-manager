@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutionException;
 
 import org.joda.time.DateTime;
 
@@ -16,42 +15,43 @@ import com.google.inject.Singleton;
 import com.mgr.training.auth.PasswordDigest;
 import com.mgr.training.data.Training.Kind;
 import com.mgr.training.data.Training.Mode;
-import com.mgr.training.service.EmployeeService;
-import com.mgr.training.service.TrainingService;
-import com.mgr.training.service.UserService;
+import com.mgr.training.store.EmployeeStore;
+import com.mgr.training.store.TrainingStore;
+import com.mgr.training.store.UserStore;
 
 @Singleton
 public class SeedDummyData {
-	private final UserService userService;
-	private final EmployeeService empService;
-	private final TrainingService trainingService;
+	private final UserStore userStore;
+	private final EmployeeStore empStore;
+	private final TrainingStore trainingStore;
 	private final PasswordDigest passwordDigest;
 
 	@Inject
-	public SeedDummyData(UserService userService, EmployeeService empService, TrainingService trainingService, PasswordDigest password) {
-		this.userService = userService;
-		this.empService = empService;
-		this.trainingService = trainingService;
+	public SeedDummyData(UserStore userStore, EmployeeStore empStore, TrainingStore trainingStore, PasswordDigest password) {
+		this.userStore = userStore;
+		this.empStore = empStore;
+		this.trainingStore = trainingStore;
 		this.passwordDigest = password;
 	}
 
-	public void seedData() throws InterruptedException, ExecutionException {
+	public void seedData() throws Exception {
 		Futures.successfulAsList(insertUsers(), insertEmployees(), insertTraining());
 	}
 
 	private ListenableFuture<List<User>> insertUsers() {
-		return userService.add(getUsers());
+		return userStore.async.add(getUsers());
 	}
 
 	private ListenableFuture<List<Employee>> insertEmployees() {
-		return empService.add(getEmployees());
+		return empStore.async.add(getEmployees());
 	}
 
-	private ListenableFuture<List<Training>> insertTraining() throws InterruptedException, ExecutionException {
-		return trainingService.add(getTraining());
+	private ListenableFuture<List<Training>> insertTraining() throws Exception {
+		return trainingStore.async.add(getTraining());
 	}
 
 	private List<User> getUsers() {
+		int lastId = 106;
 		List<User> users = Lists.newArrayList();
 		users.add(buildUser("Robert", "100", "welcome100"));
 		users.add(buildUser("Leo", "101", "welcome101"));
@@ -60,6 +60,11 @@ public class SeedDummyData {
 		users.add(buildUser("Chris", "104", "welcome104"));
 		users.add(buildUser("Fred", "105", "welcome105"));
 		users.add(buildUser("Dave", "106", "welcome106"));
+		
+		for(int i=0; i<10; i++){
+			lastId ++;
+			users.add(buildUser("User"+lastId, ""+lastId, "welcome"+lastId));
+		}
 		return users;
 	}
 
@@ -75,20 +80,20 @@ public class SeedDummyData {
 		return emps;
 	}
 
-	private List<Training> getTraining() throws InterruptedException, ExecutionException {
+	private List<Training> getTraining() throws Exception {
 		List<Training> trainings = Lists.newArrayList();
 		
-		List<Employee> trainers = empService.find(Lists.newArrayList("103", "101")).get();
+		List<Employee> trainers = empStore.find(Lists.newArrayList("103", "101"));
 		List<TrainingMetadata> attendees = buildAttendedMetadataFor(Lists.newArrayList("102", "104", "105"));
 		trainings.add(buildTraining("T-001", "Java", "Learn about java", Training.Kind.SYSTEMS_AND_TOOLS, Training.Mode.CLASS_ROOM, trainers, attendees,
 				DateTime.now().toDate(), DateTime.now().plusDays(3).toDate(), 16));
 
-		trainers = empService.find(Lists.newArrayList("104")).get();
+		trainers = empStore.find(Lists.newArrayList("104"));
 		attendees = buildAttendedMetadataFor(Lists.newArrayList("101", "102", "106"));
 		trainings.add(buildTraining("T-002", "C++", "Learn about C++", Training.Kind.SYSTEMS_AND_TOOLS, Training.Mode.CLASS_ROOM, trainers, attendees, 
 				DateTime.now().toDate(), DateTime.now().plusDays(3).toDate(), 16));
 
-		trainers = empService.find(Lists.newArrayList("101", "103")).get();
+		trainers = empStore.find(Lists.newArrayList("101", "103"));
 		attendees = buildAttendedMetadataFor(Lists.newArrayList("102", "104", "105"));
 		trainings.add(buildTraining("T-003", "Linux", "Learn about SDLC", Training.Kind.ANALYSIS, Training.Mode.E_LEARNING, trainers, attendees, 
 				DateTime.now().toDate(), DateTime.now().plusDays(3).toDate(), 16));
