@@ -19,7 +19,7 @@ import com.mgr.training.view.ViewRenderer;
 @Singleton
 public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	private final Provider<AppSession> sessionProvider;
 	private final ObjectMapper mapper;
 	private final ViewRenderer renderer;
@@ -32,7 +32,7 @@ public class HomeServlet extends HttpServlet {
 	}
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {		
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		final User user = sessionProvider.get().getUser();
 		renderer.render(new Home(user, mapper), resp.getLocale(), resp.getOutputStream());
 	}

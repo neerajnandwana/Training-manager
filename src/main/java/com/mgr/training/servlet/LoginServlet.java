@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
 		String userId = req.getParameter(Const.userId);
 		String userPass = req.getParameter(Const.userPass);
 		String curl = req.getParameter("curl");
-		
+
 		if (!Utils.isNullOrEmpty(userId) && !Utils.isNullOrEmpty(userPass)) {
 			userId = userId.trim();
 			userPass = userPass.trim();
@@ -61,12 +61,12 @@ public class LoginServlet extends HttpServlet {
 			}
 
 			if (user != null) {
-				if(Utils.isNullOrEmpty(curl)){
+				if (Utils.isNullOrEmpty(curl)) {
 					resp.sendRedirect(Routes.home(req));
 				} else {
 					curl = curl.trim();
 					resp.sendRedirect(curl);
-				}				
+				}
 				return;
 			} else {
 				params.put("err", "Invalid user/password. Try again!");

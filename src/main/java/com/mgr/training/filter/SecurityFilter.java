@@ -23,12 +23,12 @@ import com.mgr.training.util.UrlUtils;
 @Singleton
 public class SecurityFilter implements Filter {
 	private final Provider<AppSession> session;
-	
+
 	@Inject
-	public SecurityFilter(Provider<AppSession> session){
+	public SecurityFilter(Provider<AppSession> session) {
 		this.session = session;
 	}
-	
+
 	public void destroy() {
 	}
 
@@ -36,7 +36,7 @@ public class SecurityFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 		Map<String, String> params = Maps.newHashMap();
-		if(!session.get().isLoggedIn()){
+		if (!session.get().isLoggedIn()) {
 			params.put("curl", UrlUtils.getFullUrl(req));
 			resp.sendRedirect(Routes.logout(req, params));
 			return;

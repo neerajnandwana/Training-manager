@@ -1,1 +1,13 @@
-/target
+target
+*~
+*.log
+.classpath
+.project
+.settings
+.wtpmodules
+.idea
+*.ipr
+*.iws
+*.iml
+.git
+.gitignores

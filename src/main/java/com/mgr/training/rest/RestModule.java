@@ -28,38 +28,39 @@ public class RestModule extends JerseyServletModule {
 	protected void configureServlets() {
 		/* bind wrapper response */
 		bind(AppResponse.class);
-		
-		/* bind resources*/
+
+		/* bind resources */
 		bind(UserResource.class);
 		bind(EmployeeResource.class);
 		bind(TrainingResource.class);
-		
-		/* bind jackson converters for JAXB/JSON serialization */		
-		bind(JacksonJsonProvider.class).in(Scopes.SINGLETON);		
+
+		/* bind jackson converters for JAXB/JSON serialization */
+		bind(JacksonJsonProvider.class).in(Scopes.SINGLETON);
 		bind(MessageBodyReader.class).to(JacksonJsonProvider.class);
 		bind(MessageBodyWriter.class).to(JacksonJsonProvider.class);
-		
+
 		serve("/r/*").with(GuiceContainer.class);
 
-        /* create wrapper for all rest service response */
-        MethodInterceptor interceptor = new RestResponseInterceptor();
-        requestInjection(interceptor);
-        bindInterceptor(any(), annotatedWith(GET.class), interceptor);
-        bindInterceptor(any(), annotatedWith(POST.class), interceptor);
-        bindInterceptor(any(), annotatedWith(PUT.class), interceptor);
-        bindInterceptor(any(), annotatedWith(DELETE.class), interceptor);
+		/* create wrapper for all rest service response */
+		MethodInterceptor interceptor = new RestResponseInterceptor();
+		requestInjection(interceptor);
+		bindInterceptor(any(), annotatedWith(GET.class), interceptor);
+		bindInterceptor(any(), annotatedWith(POST.class), interceptor);
+		bindInterceptor(any(), annotatedWith(PUT.class), interceptor);
+		bindInterceptor(any(), annotatedWith(DELETE.class), interceptor);
 	}
-	
+
 	class RestResponseInterceptor implements MethodInterceptor {
-		@Inject private Provider<AppResponse> responseProvider;
+		@Inject
+		private Provider<AppResponse> responseProvider;
 
 		public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 			AppResponse response = responseProvider.get();
 			Object result = null;
-			try{
+			try {
 				result = methodInvocation.proceed();
 				response.setResult(result);
-			} catch(Throwable e){
+			} catch (Throwable e) {
 				response.setError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e);
 			}
 			return response;

@@ -13,8 +13,8 @@ import com.google.inject.Singleton;
 import com.mgr.training.util.Const;
 
 /**
- * Utility class for Charset encoding Servlet Filter. This filter would be used to
- * consistently set the character encoding as Application Charset.
+ * Utility class for Charset encoding Servlet Filter. This filter would be used
+ * to consistently set the character encoding as Application Charset.
  * 
  */
 @Singleton

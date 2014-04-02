@@ -28,25 +28,25 @@ public class UserStore extends BaseStore<User, String> {
 		boolean isAuthorize = password.verify(user.getPassword(), userPass);
 		return isAuthorize ? user : null;
 	}
-	
-	protected AsyncUserStoreWrapper buildAsyncStore(UserStore store, ListeningExecutorService  executor){
+
+	protected AsyncUserStoreWrapper buildAsyncStore(UserStore store, ListeningExecutorService executor) {
 		return new AsyncUserStoreWrapper(store, executor);
 	}
-	
-	public class AsyncUserStoreWrapper extends AsyncStoreWrapper{
+
+	public class AsyncUserStoreWrapper extends AsyncStoreWrapper {
 
 		public AsyncUserStoreWrapper(BaseStore<User, String> store, ListeningExecutorService executor) {
 			super(store, executor);
 		}
-		
+
 		public ListenableFuture<User> getByCredential(final String userId, final String userPass) {
 			return executor.submit(new Callable<User>() {
 				@Override
 				public User call() throws Exception {
-					return ((UserStore)store).getByCredential(userId, userPass);				
-				}			
+					return ((UserStore) store).getByCredential(userId, userPass);
+				}
 			});
 		}
-		
+
 	}
 }

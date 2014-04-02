@@ -15,8 +15,8 @@ public class PasswordDigestTest {
 		byte[] passwordHash = passwordDigest.digest(password);
 		Assert.assertTrue(passwordDigest.verify(passwordHash, password));
 		Assert.assertFalse(passwordDigest.verify(passwordHash, wrongPassword));
-	}	
-	
+	}
+
 	@Test
 	public final void emptyPasswordDigestTest() {
 		String password = "";
@@ -24,8 +24,8 @@ public class PasswordDigestTest {
 		byte[] passwordHash = passwordDigest.digest(password);
 		Assert.assertTrue(passwordDigest.verify(passwordHash, password));
 		Assert.assertFalse(passwordDigest.verify(passwordHash, wrongPassword));
-	}		
-	
+	}
+
 	@Test
 	public final void longPasswordDigestTest() {
 		String password = "my very long password with number : 1234567890";
@@ -33,8 +33,8 @@ public class PasswordDigestTest {
 		byte[] passwordHash = passwordDigest.digest(password);
 		Assert.assertTrue(passwordDigest.verify(passwordHash, password));
 		Assert.assertFalse(passwordDigest.verify(passwordHash, wrongPassword));
-	}		
-	
+	}
+
 	@Test
 	public final void passwordWithSpecialCharDigestTest() {
 		String password = "password with special char: ~!@#$%^&*()_+}|:\"<?";

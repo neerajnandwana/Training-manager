@@ -25,38 +25,34 @@ import freemarker.template.TemplateException;
  * A {@link ViewRenderer} which renders Freemarker ({@code .ftl}) templates.
  */
 public class FreemarkerViewRenderer implements ViewRenderer {
-    private static class TemplateLoader extends CacheLoader<Class<?>, Configuration> {
-        @Override
-        public Configuration load(Class<?> key) throws Exception {
-            final Configuration configuration = new Configuration();
-            configuration.setObjectWrapper(new DefaultObjectWrapper());
-            configuration.loadBuiltInEncodingMap();
-            configuration.setDefaultEncoding(Const.CHAR_SET.name());
-            configuration.setClassForTemplateLoading(key, "/");
-            return configuration;
-        }
-    }
+	private static class TemplateLoader extends CacheLoader<Class<?>, Configuration> {
+		@Override
+		public Configuration load(Class<?> key) throws Exception {
+			final Configuration configuration = new Configuration();
+			configuration.setObjectWrapper(new DefaultObjectWrapper());
+			configuration.loadBuiltInEncodingMap();
+			configuration.setDefaultEncoding(Const.CHAR_SET.name());
+			configuration.setClassForTemplateLoading(key, "/");
+			return configuration;
+		}
+	}
 
-    private final LoadingCache<Class<?>, Configuration> configurationCache;
+	private final LoadingCache<Class<?>, Configuration> configurationCache;
 
-    public FreemarkerViewRenderer() {
-        this.configurationCache = CacheBuilder.newBuilder()
-                                              .concurrencyLevel(128)
-                                              .build(new TemplateLoader());
-    }
+	public FreemarkerViewRenderer() {
+		this.configurationCache = CacheBuilder.newBuilder().concurrencyLevel(128).build(new TemplateLoader());
+	}
 
-    @Override
-    public void render(View view,
-                       Locale locale,
-                       OutputStream output) throws IOException, WebApplicationException {
-        try {
-            final Configuration configuration = configurationCache.getUnchecked(view.getClass());
-            final Charset charset = view.getCharset().or(Charset.forName(configuration.getEncoding(locale)));
-            final Template template = configuration.getTemplate(view.getTemplateName(), locale, charset.name());
-            template.process(view, new OutputStreamWriter(output, template.getEncoding()));
-        } catch (TemplateException e) {
-            throw new MappableContainerException(e);
-        }
-    }
+	@Override
+	public void render(View view, Locale locale, OutputStream output) throws IOException, WebApplicationException {
+		try {
+			final Configuration configuration = configurationCache.getUnchecked(view.getClass());
+			final Charset charset = view.getCharset().or(Charset.forName(configuration.getEncoding(locale)));
+			final Template template = configuration.getTemplate(view.getTemplateName(), locale, charset.name());
+			template.process(view, new OutputStreamWriter(output, template.getEncoding()));
+		} catch (TemplateException e) {
+			throw new MappableContainerException(e);
+		}
+	}
 
 }

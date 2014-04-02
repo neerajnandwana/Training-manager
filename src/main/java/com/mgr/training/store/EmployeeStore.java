@@ -7,11 +7,10 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.mgr.training.data.Employee;
 
-
 public class EmployeeStore extends BaseStore<Employee, String> {
 	@Inject
-	public EmployeeStore(Provider<Session> session, ListeningExecutorService  executor) {
+	public EmployeeStore(Provider<Session> session, ListeningExecutorService executor) {
 		super(session, executor);
 	}
-	
+
 }

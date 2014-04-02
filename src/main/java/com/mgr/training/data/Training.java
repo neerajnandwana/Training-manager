@@ -20,9 +20,9 @@ import com.google.common.collect.Lists;
 
 @Entity
 @Table(name = "TRNG")
-public class Training  implements Serializable{
+public class Training implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name = "id")
 	private String trainingId;
@@ -45,43 +45,45 @@ public class Training  implements Serializable{
 	private Date trainingEndDate;
 	@Column(name = "level_allowed")
 	private String levelAllowed;
-	
+
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	private List<Employee> trainerIds = Lists.newArrayList();
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<TrainingMetadata> meta = Lists.newArrayList();
-	
-	@PrePersist 
-	protected void onCreate(){
+
+	@PrePersist
+	protected void onCreate() {
 		createdOn = new Date();
 	}
-	
+
 	enum Kind {
-		ANALYSIS("Analysis"), 
-		BUSINESS_AWARENESS("Business Awareness"), 
-		FINANCE("Finance"), 
-		SOFT_SKILLS("Soft Skills"), 
-		SYSTEMS_AND_TOOLS("System and Tools");
-		
+		ANALYSIS("Analysis"), BUSINESS_AWARENESS("Business Awareness"), FINANCE("Finance"), SOFT_SKILLS("Soft Skills"), SYSTEMS_AND_TOOLS("System and Tools");
+
 		private final String name;
-		private Kind(String name){
+
+		private Kind(String name) {
 			this.name = name;
 		}
-		public String toString(){
+
+		public String toString() {
 			return name;
 		}
 	}
 
 	enum Mode {
 		CLASS_ROOM("Class Room"), // trainer and and trainee are in common place
-		E_LEARNING("E Learning"), // online training, without any help from trainer
-		VIRTUAL("Vertual"); // via teleconference, web conference with help of trainer
-		
+		E_LEARNING("E Learning"), // online training, without any help from
+									// trainer
+		VIRTUAL("Vertual"); // via teleconference, web conference with help of
+							// trainer
+
 		private final String name;
-		private Mode(String name){
+
+		private Mode(String name) {
 			this.name = name;
 		}
-		public String toString(){
+
+		public String toString() {
 			return name;
 		}
 	}
@@ -180,7 +182,7 @@ public class Training  implements Serializable{
 
 	public void setMeta(List<TrainingMetadata> metas) {
 		getMeta().clear();
-		for(TrainingMetadata meta: metas){
+		for (TrainingMetadata meta : metas) {
 			addAttendedMetadata(meta);
 		}
 	}

@@ -19,16 +19,18 @@ import com.google.inject.persist.Transactional;
 
 public class BaseStore<T, ID extends Serializable> {
 	protected final Provider<Session> sessionProvider;
-	protected final int batchSize = 0; //1000+ records committed in single transaction
+	protected final int batchSize = 0; // 1000+ records committed in single
+										// transaction
 
 	public final AsyncStoreWrapper async;
-	
-	public BaseStore(final Provider<Session> session, final ListeningExecutorService  executor) {
+
+	public BaseStore(final Provider<Session> session, final ListeningExecutorService executor) {
 		this.sessionProvider = session;
-		this.async  = buildAsyncStore(this, executor);
+		this.async = buildAsyncStore(this, executor);
 	}
 
-	private final TypeToken<T> typeToken = new TypeToken<T>(getClass()) {};
+	private final TypeToken<T> typeToken = new TypeToken<T>(getClass()) {
+	};
 	public final Class<T> entityClass = (Class<T>) typeToken.getRawType();
 
 	public T find(final ID id) {
@@ -46,56 +48,57 @@ public class BaseStore<T, ID extends Serializable> {
 	}
 
 	public List<T> all(final MultivaluedMap<String, String> queryParams) {
-		//if no query params is passed 
-		if(queryParams == null || queryParams.isEmpty()){
+		// if no query params is passed
+		if (queryParams == null || queryParams.isEmpty()) {
 			return all();
 		}
-		
+
 		Session session = sessionProvider.get();
 		Criteria criteria = session.createCriteria(entityClass);
-		
+
 		List<String> sort = queryParams.get("sort");
 		String limit = queryParams.getFirst("limit");
 		String page = queryParams.getFirst("page");
-		
+
 		int defaultLimit = 100;
 		int defaultPage = 1;
 
 		int limit_int = defaultLimit;
 		int page_int = defaultPage;
-		
-		//sort param should be list of sortOrder and sortProperty like sort=asc,name,desc,level,asc,age etc
-		if(sort != null && !sort.isEmpty() && sort.size()%2 == 0){
-			for (int i=0, size= sort.size(); i<=size; i+=2){
+
+		// sort param should be list of sortOrder and sortProperty like
+		// sort=asc,name,desc,level,asc,age etc
+		if (sort != null && !sort.isEmpty() && sort.size() % 2 == 0) {
+			for (int i = 0, size = sort.size(); i <= size; i += 2) {
 				String sortOrder = sort.get(i);
-				String sortAttribute = sort.get(i+1);
-				if("asc".equalsIgnoreCase(sortOrder)){
+				String sortAttribute = sort.get(i + 1);
+				if ("asc".equalsIgnoreCase(sortOrder)) {
 					criteria.addOrder(Order.asc(sortAttribute));
-				} else if("desc".equalsIgnoreCase(sortOrder)){
+				} else if ("desc".equalsIgnoreCase(sortOrder)) {
 					criteria.addOrder(Order.desc(sortAttribute));
-				}				
-			}			
+				}
+			}
 		}
-		
-		//list pagination properties
-		if(page != null && !page.isEmpty()){
-			try{
+
+		// list pagination properties
+		if (page != null && !page.isEmpty()) {
+			try {
 				page_int = Integer.parseInt(page);
-			} catch(NumberFormatException e){
-				//don't do anything
+			} catch (NumberFormatException e) {
+				// don't do anything
 			}
 		}
 		criteria.setFirstResult(page_int - 1);
-		
-		if(limit != null && !limit.isEmpty()){
-			try{
+
+		if (limit != null && !limit.isEmpty()) {
+			try {
 				limit_int = Integer.parseInt(limit);
-			} catch(NumberFormatException e){
-				//don't do anything
+			} catch (NumberFormatException e) {
+				// don't do anything
 			}
 		}
 		criteria.setMaxResults(limit_int);
-		
+
 		return criteria.list();
 	}
 
@@ -154,7 +157,7 @@ public class BaseStore<T, ID extends Serializable> {
 	}
 
 	public void flushClearSession(final int counter, final Session session) {
-		if(batchSize == 0){
+		if (batchSize == 0) {
 			return;
 		}
 		if (counter % batchSize == 0) {
@@ -162,26 +165,26 @@ public class BaseStore<T, ID extends Serializable> {
 			session.flush();
 		}
 	}
-	
-	protected AsyncStoreWrapper buildAsyncStore(final BaseStore store, final ListeningExecutorService  executor){
+
+	protected AsyncStoreWrapper buildAsyncStore(final BaseStore store, final ListeningExecutorService executor) {
 		return new AsyncStoreWrapper(store, executor);
 	}
-	
+
 	public class AsyncStoreWrapper {
-		protected final ListeningExecutorService  executor;
+		protected final ListeningExecutorService executor;
 		protected final BaseStore<T, ID> store;
-		
+
 		public AsyncStoreWrapper(BaseStore<T, ID> store, ListeningExecutorService executor) {
 			this.executor = executor;
 			this.store = store;
 		}
-		
+
 		public ListenableFuture<T> find(final ID id) {
 			return executor.submit(new Callable<T>() {
 				@Override
 				public T call() throws Exception {
-					return store.find(id);				
-				}			
+					return store.find(id);
+				}
 			});
 		}
 
@@ -189,8 +192,8 @@ public class BaseStore<T, ID extends Serializable> {
 			return executor.submit(new Callable<List<T>>() {
 				@Override
 				public List<T> call() throws Exception {
-					return store.find(ids);				
-				}			
+					return store.find(ids);
+				}
 			});
 		}
 
@@ -198,8 +201,8 @@ public class BaseStore<T, ID extends Serializable> {
 			return executor.submit(new Callable<List<T>>() {
 				@Override
 				public List<T> call() throws Exception {
-					return store.all();				
-				}			
+					return store.all();
+				}
 			});
 		}
 
@@ -225,8 +228,8 @@ public class BaseStore<T, ID extends Serializable> {
 			return executor.submit(new Callable<T>() {
 				@Override
 				public T call() throws Exception {
-					return store.remove(entity);				
-				}			
+					return store.remove(entity);
+				}
 			});
 		}
 
@@ -234,8 +237,8 @@ public class BaseStore<T, ID extends Serializable> {
 			return executor.submit(new Callable<T>() {
 				@Override
 				public T call() throws Exception {
-					return store.remove(id);				
-				}			
+					return store.remove(id);
+				}
 			});
 		}
 
@@ -243,8 +246,8 @@ public class BaseStore<T, ID extends Serializable> {
 			return executor.submit(new Callable<List<T>>() {
 				@Override
 				public List<T> call() throws Exception {
-					return store.remove(entities);				
-				}			
+					return store.remove(entities);
+				}
 			});
 		}
 
@@ -252,8 +255,8 @@ public class BaseStore<T, ID extends Serializable> {
 			return executor.submit(new Callable<T>() {
 				@Override
 				public T call() throws Exception {
-					return store.update(entity);				
-				}			
+					return store.update(entity);
+				}
 			});
 		}
 
@@ -261,9 +264,9 @@ public class BaseStore<T, ID extends Serializable> {
 			return executor.submit(new Callable<List<T>>() {
 				@Override
 				public List<T> call() throws Exception {
-					return store.update(entities);				
-				}			
+					return store.update(entities);
+				}
 			});
-		}		
+		}
 	}
 }

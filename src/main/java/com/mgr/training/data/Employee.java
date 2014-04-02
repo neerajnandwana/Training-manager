@@ -16,9 +16,9 @@ import com.google.common.collect.Lists;
 
 @Entity
 @Table(name = "EMP")
-public class Employee implements Serializable{
+public class Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name = "emp_id")
 	private String id;

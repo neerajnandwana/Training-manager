@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "TRNG_META")
-public class TrainingMetadata  implements Serializable{
+public class TrainingMetadata implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue
 	@Column(name = "meta_id")
@@ -33,13 +33,13 @@ public class TrainingMetadata  implements Serializable{
 	@Column(name = "feedback")
 	private String feedback;
 	@Column(name = "trainer_feedback")
-	private String trainerFeedback;	
-	
+	private String trainerFeedback;
+
 	@JsonIgnore
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "trng_id", nullable = false)
 	private Training training;
-	
+
 	enum Rating {
 		EXCELLENT(5), GOOD(4), SATISFACTORY(3), AVERAGE(2), POOR(1);
 
@@ -53,52 +53,67 @@ public class TrainingMetadata  implements Serializable{
 			return code;
 		}
 	}
-	
+
 	public String getAttendeesId() {
 		return attendeesId;
 	}
+
 	public void setAttendeesId(String attendeesId) {
 		this.attendeesId = attendeesId;
 	}
+
 	public boolean isAttend() {
 		return attend;
 	}
+
 	public void setAttend(boolean attend) {
 		this.attend = attend;
 	}
+
 	public int getHoursCompleted() {
 		return hoursCompleted;
 	}
+
 	public void setHoursCompleted(int hoursCompleted) {
 		this.hoursCompleted = hoursCompleted;
 	}
+
 	public int getRating() {
 		return rating;
 	}
+
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
+
 	public String getFeedback() {
 		return feedback;
 	}
+
 	public void setFeedback(String feedback) {
 		this.feedback = feedback;
 	}
+
 	public String getTrainerFeedback() {
 		return trainerFeedback;
 	}
+
 	public void setTrainerFeedback(String trainerFeedback) {
 		this.trainerFeedback = trainerFeedback;
-	}	
+	}
+
 	public Training getTraining() {
 		return training;
 	}
+
 	public void setTraining(Training training) {
 		this.training = training;
 	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}

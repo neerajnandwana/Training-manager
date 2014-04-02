@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
@@ -51,7 +52,7 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 			final Module applicationModule = initApplicationModules();
 			final Module servletModule = initApplicationServletModule();
 			final Module instrumentationModule = new AppInstrumentationModule();
-			injector = Guice.createInjector(applicationModule, servletModule,instrumentationModule);			
+			injector = Guice.createInjector(applicationModule, servletModule, instrumentationModule);
 		}
 		return injector;
 	}
@@ -88,8 +89,8 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 				serve("/", "/login").with(LoginServlet.class);
 				serve("/logout").with(LogoutServlet.class);
 				serve("/s/home").with(HomeServlet.class);
-								
-				//bootstrap the dummy data for testing
+
+				// bootstrap the dummy data for testing
 				serve("/dummydata").with(InsertDummyData.class);
 
 				bind(ViewRenderer.class).to(FreemarkerViewRenderer.class).asEagerSingleton();
@@ -103,12 +104,17 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 	@Singleton
 	public ObjectMapper provideJacksonMapper() {
 		ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new GuavaModule());
-        mapper.registerModule(new JodaModule());
+
+		// adding modules
+		mapper.registerModule(new GuavaModule());
+		mapper.registerModule(new JodaModule());
 		// AfterburnerModule uses bytecode generation to further speed up data
 		// binding
 		// (+30-40% throughput for serialization, deserialization)
 		mapper.registerModule(new AfterburnerModule());
+
+		// configuring mapper
+		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
 		return mapper;
 	}
 }

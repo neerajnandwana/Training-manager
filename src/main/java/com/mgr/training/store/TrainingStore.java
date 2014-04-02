@@ -8,9 +8,9 @@ import com.google.inject.Provider;
 import com.mgr.training.data.Training;
 
 public class TrainingStore extends BaseStore<Training, String> {
-	
+
 	@Inject
-	public TrainingStore(Provider<Session> session, ListeningExecutorService  executor) {
+	public TrainingStore(Provider<Session> session, ListeningExecutorService executor) {
 		super(session, executor);
 	}
 }

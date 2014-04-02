@@ -51,8 +51,8 @@ public class AppResponse implements Serializable {
 	public String toString() {
 		return Objects.toStringHelper(this.getClass()).add("result", result).add("meta", meta).toString();
 	}
-	
-	private class Meta implements Serializable{
+
+	private class Meta implements Serializable {
 		private static final long serialVersionUID = 1L;
 		private int code = HttpServletResponse.SC_OK;
 		private String error;
@@ -60,10 +60,10 @@ public class AppResponse implements Serializable {
 		@JsonIgnore
 		private transient Stopwatch stopwatch;
 
-		public Meta(){
-	        this.stopwatch = Stopwatch.createStarted();			
+		public Meta() {
+			this.stopwatch = Stopwatch.createStarted();
 		}
-		
+
 		public int getCode() {
 			return code;
 		}
@@ -72,7 +72,7 @@ public class AppResponse implements Serializable {
 			this.code = code;
 		}
 
-		public String getResponseTime() {			
+		public String getResponseTime() {
 			return stopwatch.stop().elapsed(TimeUnit.MILLISECONDS) + " ms";
 		}
 
@@ -94,7 +94,12 @@ public class AppResponse implements Serializable {
 
 		@Override
 		public String toString() {
-			return Objects.toStringHelper(this.getClass()).add("code", code).add("responseTime", getResponseTime()).add("error", error).add("errorDetail", errorDetail).toString();
+			return Objects.toStringHelper(this.getClass())
+					.add("code", code)
+					.add("responseTime", getResponseTime())
+					.add("error", error)
+					.add("errorDetail", errorDetail)
+					.toString();
 		}
 	}
 }

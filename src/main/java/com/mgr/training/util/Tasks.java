@@ -17,10 +17,10 @@ import com.google.inject.Singleton;
 @Singleton
 public class Tasks {
 	private static final Log LOG = LogFactory.getLog(Tasks.class);
-	private final ListeningExecutorService  executor;
+	private final ListeningExecutorService executor;
 
 	@Inject
-	public Tasks(ListeningExecutorService  executor) {
+	public Tasks(ListeningExecutorService executor) {
 		this.executor = executor;
 	}
 

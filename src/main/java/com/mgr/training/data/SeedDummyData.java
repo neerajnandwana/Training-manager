@@ -60,10 +60,10 @@ public class SeedDummyData {
 		users.add(buildUser("Chris", "104", "welcome104"));
 		users.add(buildUser("Fred", "105", "welcome105"));
 		users.add(buildUser("Dave", "106", "welcome106"));
-		
-		for(int i=0; i<10; i++){
-			lastId ++;
-			users.add(buildUser("User"+lastId, ""+lastId, "welcome"+lastId));
+
+		for (int i = 0; i < 10; i++) {
+			lastId++;
+			users.add(buildUser("User" + lastId, "" + lastId, "welcome" + lastId));
 		}
 		return users;
 	}
@@ -82,7 +82,7 @@ public class SeedDummyData {
 
 	private List<Training> getTraining() throws Exception {
 		List<Training> trainings = Lists.newArrayList();
-		
+
 		List<Employee> trainers = empStore.find(Lists.newArrayList("103", "101"));
 		List<TrainingMetadata> attendees = buildAttendedMetadataFor(Lists.newArrayList("102", "104", "105"));
 		trainings.add(buildTraining("T-001", "Java", "Learn about java", Training.Kind.SYSTEMS_AND_TOOLS, Training.Mode.CLASS_ROOM, trainers, attendees,
@@ -90,13 +90,13 @@ public class SeedDummyData {
 
 		trainers = empStore.find(Lists.newArrayList("104"));
 		attendees = buildAttendedMetadataFor(Lists.newArrayList("101", "102", "106"));
-		trainings.add(buildTraining("T-002", "C++", "Learn about C++", Training.Kind.SYSTEMS_AND_TOOLS, Training.Mode.CLASS_ROOM, trainers, attendees, 
-				DateTime.now().toDate(), DateTime.now().plusDays(3).toDate(), 16));
+		trainings.add(buildTraining("T-002", "C++", "Learn about C++", Training.Kind.SYSTEMS_AND_TOOLS, Training.Mode.CLASS_ROOM, trainers, attendees, DateTime
+				.now().toDate(), DateTime.now().plusDays(3).toDate(), 16));
 
 		trainers = empStore.find(Lists.newArrayList("101", "103"));
 		attendees = buildAttendedMetadataFor(Lists.newArrayList("102", "104", "105"));
-		trainings.add(buildTraining("T-003", "Linux", "Learn about SDLC", Training.Kind.ANALYSIS, Training.Mode.E_LEARNING, trainers, attendees, 
-				DateTime.now().toDate(), DateTime.now().plusDays(3).toDate(), 16));
+		trainings.add(buildTraining("T-003", "Linux", "Learn about SDLC", Training.Kind.ANALYSIS, Training.Mode.E_LEARNING, trainers, attendees, DateTime.now()
+				.toDate(), DateTime.now().plusDays(3).toDate(), 16));
 
 		return trainings;
 	}

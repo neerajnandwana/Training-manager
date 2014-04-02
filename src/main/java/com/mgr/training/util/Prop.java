@@ -11,16 +11,17 @@ public class Prop {
 	public final static PropertiesConfiguration applicationConfig = loadConfig(Const.APPLICATION_PROPERTIES);
 	public final static PropertiesConfiguration persistenceConfig = loadConfig(Const.PERSISTENCE_PROPERTIES);
 
-	private Prop() {}
-	
-	private static PropertiesConfiguration loadConfig(final String fileName){
+	private Prop() {
+	}
+
+	private static PropertiesConfiguration loadConfig(final String fileName) {
 		PropertiesConfiguration config = null;
 		try {
 			config = new PropertiesConfiguration(fileName);
 			config.setReloadingStrategy(new FileChangedReloadingStrategy());
-			LOG.debug("property file loaded : "+config.getBasePath());
+			LOG.debug("property file loaded : " + config.getBasePath());
 		} catch (ConfigurationException e) {
-			LOG.error("Error while loading the config file in startup: "+ fileName, e);
+			LOG.error("Error while loading the config file in startup: " + fileName, e);
 		}
 		return config;
 	}

@@ -11,17 +11,20 @@ import javax.ws.rs.WebApplicationException;
  */
 public interface ViewRenderer {
 
-    /**
-     * Renders the given {@link View} for the given {@link Locale} to the given {@link
-     * OutputStream}.
-     *
-     * @param view   a view
-     * @param locale the locale in which the view should be rendered
-     * @param output the output stream
-     * @throws IOException             if there is an error writing to {@code output}
-     * @throws WebApplicationException if there is an error rendering the template
-     */
-    void render(View view,
-                Locale locale,
-                OutputStream output) throws IOException, WebApplicationException;
+	/**
+	 * Renders the given {@link View} for the given {@link Locale} to the given
+	 * {@link OutputStream}.
+	 * 
+	 * @param view
+	 *            a view
+	 * @param locale
+	 *            the locale in which the view should be rendered
+	 * @param output
+	 *            the output stream
+	 * @throws IOException
+	 *             if there is an error writing to {@code output}
+	 * @throws WebApplicationException
+	 *             if there is an error rendering the template
+	 */
+	void render(View view, Locale locale, OutputStream output) throws IOException, WebApplicationException;
 }
