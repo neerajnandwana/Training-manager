@@ -42,7 +42,8 @@ public class LoginServlet extends HttpServlet {
 		Map<String, String> params = Maps.newHashMap();
 		String userId = req.getParameter(Const.userId);
 		String userPass = req.getParameter(Const.userPass);
-
+		String curl = req.getParameter("curl");
+		
 		if (!Utils.isNullOrEmpty(userId) && !Utils.isNullOrEmpty(userPass)) {
 			userId = userId.trim();
 			userPass = userPass.trim();
@@ -60,13 +61,19 @@ public class LoginServlet extends HttpServlet {
 			}
 
 			if (user != null) {
-				resp.sendRedirect(Routes.home(req));
+				if(Utils.isNullOrEmpty(curl)){
+					resp.sendRedirect(Routes.home(req));
+				} else {
+					curl = curl.trim();
+					resp.sendRedirect(curl);
+				}				
 				return;
 			} else {
 				params.put("err", "Invalid user/password. Try again!");
 			}
 		}
 
+		params.put("curl", curl);
 		resp.sendRedirect(Routes.login(req, params));
 	}
 }

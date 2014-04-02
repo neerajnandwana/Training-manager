@@ -1,87 +1,76 @@
 package com.mgr.training.metrics;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
+
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.health.HealthCheck;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.codahale.metrics.health.jvm.ThreadDeadlockHealthCheck;
-import com.codahale.metrics.servlets.AdminServlet;
-import com.codahale.metrics.servlets.HealthCheckServlet;
-import com.codahale.metrics.servlets.MetricsServlet;
-import com.codahale.metrics.servlets.PingServlet;
-import com.codahale.metrics.servlets.ThreadDumpServlet;
-import com.google.inject.AbstractModule;
-import com.google.inject.Module;
-import com.google.inject.servlet.ServletModule;
+import com.codahale.metrics.jvm.BufferPoolMetricSet;
+import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
+import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
+import com.codahale.metrics.jvm.ThreadStatesGaugeSet;
+import com.google.common.base.Throwables;
+import com.google.inject.multibindings.Multibinder;
+import com.mgr.training.metrics.healthcheck.HibernateSessionHealthCheck;
 import com.palominolabs.metrics.guice.InstrumentationModule;
-import com.palominolabs.metrics.guice.servlet.AdminServletModule;
 
-public class AppInstrumentationModule  extends AbstractModule {	
-	private static final String METRICS_ROOT_URI = AdminServlet.DEFAULT_METRICS_URI;
-	private static final String METRICS_URI = METRICS_ROOT_URI + AdminServlet.DEFAULT_METRICS_URI;
-	private static final String PING_URI = METRICS_ROOT_URI + AdminServlet.DEFAULT_PING_URI;
-	private static final String THREADS_URI = METRICS_ROOT_URI + AdminServlet.DEFAULT_THREADS_URI;
-	private static final String HEALTHCHECK_URI = METRICS_ROOT_URI + AdminServlet.DEFAULT_HEALTHCHECK_URI;
+public class AppInstrumentationModule  extends InstrumentationModule {
+	final MetricRegistry metricRegistry = AppMetricsServletContextListener.METRIC_REGISTRY;
+	final HealthCheckRegistry healthCheckRegistry = AppHealthCheckServletContextListener.HEALTH_CHECK_REGISTRY;	
 	
 	@Override
 	protected void configure() {
-		install(initInstrumentationModule());
-		install(initServletModule());
+		super.configure();
+		//register JVM registry
+		metricRegistry.register("jvm.buffers", new BufferPoolMetricSet(ManagementFactory.getPlatformMBeanServer()));
+		metricRegistry.register("jvm.gc", new GarbageCollectorMetricSet());
+		metricRegistry.register("jvm.memory", new MemoryUsageGaugeSet());
+		metricRegistry.register("jvm.threads", new ThreadStatesGaugeSet());
 		
-		registerHealthChecks();
-		startReporter();
-	}
-	
-	private Module initInstrumentationModule(){
-		final Module instrumentationModule = new InstrumentationModule(){			
-			@Override
-			protected HealthCheckRegistry createHealthCheckRegistry() {
-				return AppAdminServletContextListener.HEALTH_CHECK_REGISTRY;
-			}
-			@Override
-			protected MetricRegistry createMetricRegistry() {
-				return AppAdminServletContextListener.METRIC_REGISTRY;
-			}			
-		};
-		return instrumentationModule;		
-	}
-
-	private Module initServletModule() {
-		final Module applicationServletModule = new ServletModule() {
-			@Override
-			protected void configureServlets() {				
-				install(new AdminServletModule());
+		//register health check registry
+		Multibinder<HealthCheck> healthChecksBinder = Multibinder.newSetBinder(binder(), HealthCheck.class);
+		healthChecksBinder.addBinding().to(HibernateSessionHealthCheck.class);
+		healthChecksBinder.addBinding().to(ThreadDeadlockHealthCheck.class);
 				
-				bind(MetricsServlet.class).asEagerSingleton();
-				bind(PingServlet.class).asEagerSingleton();
-				bind(ThreadDumpServlet.class).asEagerSingleton();
-				bind(HealthCheckServlet.class).asEagerSingleton();
-				
-				serve(METRICS_URI).with(MetricsServlet.class);
-				serve(PING_URI).with(PingServlet.class);
-				serve(THREADS_URI).with(ThreadDumpServlet.class);
-				serve(HEALTHCHECK_URI).with(HealthCheckServlet.class);
-			}
-		};
-		return applicationServletModule;
+		install(new AppInstrumentationServletModule());
+		
+		try {
+			startReporter();
+		} catch (IOException e) {		
+			throw Throwables.propagate(e);
+		}
 	}
 	
-	private void registerHealthChecks(){
-		final HealthCheckRegistry healthCheckRegistry = AppAdminServletContextListener.HEALTH_CHECK_REGISTRY;		
-		healthCheckRegistry.register("DB Health", new DBHealthCheck());
-		healthCheckRegistry.register("ThreadDeadLock Health", new ThreadDeadlockHealthCheck());		
+	@Override
+	protected HealthCheckRegistry createHealthCheckRegistry() {
+		return healthCheckRegistry;
 	}
 	
-	private void startReporter(){
-		new File("D:\\trainingmgr\\report").mkdir();
-		final CsvReporter reporter = CsvReporter.forRegistry(AppAdminServletContextListener.METRIC_REGISTRY)
-								                .formatFor(Locale.US)
-								                .convertRatesTo(TimeUnit.SECONDS)
-								                .convertDurationsTo(TimeUnit.MILLISECONDS)
-								                .build(new File("c:\\trainingmgr\\report"));
-		reporter.start(1, TimeUnit.MINUTES);
+	@Override
+	protected MetricRegistry createMetricRegistry() {
+		return metricRegistry;
+	}
+	
+	private void startReporter() throws IOException{
+		final String dirPath = "trainingmgr-report"; 
+		final String homeDir = System.getProperty("user.home");
+		final File file = new File(homeDir, dirPath);
+		
+		FileUtils.forceMkdir(file);
+		
+		CsvReporter.forRegistry(metricRegistry)
+                .formatFor(Locale.US)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .build(file)
+            	.start(1, TimeUnit.MINUTES);
 	}
 }

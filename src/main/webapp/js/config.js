@@ -1,6 +1,12 @@
 'use strict';
 
-app.App.config(['$routeProvider', '$datepickerProvider', function($routeProvider, $datepickerProvider) {
+app.App.config(['$provide', '$routeProvider', '$datepickerProvider', function($provide, $routeProvider, $datepickerProvider) {
+	
+	var userProfile = angular.copy(window.up);
+	
+	//profile as a injectible constant
+	$provide.constant('userProfile', userProfile);
+	
 	$routeProvider.
 		when('/home',   			{templateUrl: 'partials/home.html',				controller: 'HomeCtrl'}).
 		when('/training',			{templateUrl: 'partials/training.html', 		controller: 'TrainingCtrl'}).
@@ -21,4 +27,6 @@ app.App.config(['$routeProvider', '$datepickerProvider', function($routeProvider
 		dateFormat: 'dd/MM/yyyy',
 		startWeek: 1
 	});
+	
+	
 }]);

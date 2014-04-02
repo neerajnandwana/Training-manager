@@ -35,12 +35,11 @@ public class RestModule extends JerseyServletModule {
 		bind(TrainingResource.class);
 		
 		/* bind jackson converters for JAXB/JSON serialization */		
-		bind(JacksonJsonProvider.class).in(Scopes.SINGLETON);
+		bind(JacksonJsonProvider.class).in(Scopes.SINGLETON);		
 		bind(MessageBodyReader.class).to(JacksonJsonProvider.class);
 		bind(MessageBodyWriter.class).to(JacksonJsonProvider.class);
-
-		serve("/r/*").with(GuiceContainer.class);
 		
+		serve("/r/*").with(GuiceContainer.class);
 
         /* create wrapper for all rest service response */
         MethodInterceptor interceptor = new RestResponseInterceptor();

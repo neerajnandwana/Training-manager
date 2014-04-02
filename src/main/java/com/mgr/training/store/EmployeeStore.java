@@ -1,7 +1,5 @@
 package com.mgr.training.store;
 
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.hibernate.Session;
 
 import com.google.common.util.concurrent.ListeningExecutorService;
