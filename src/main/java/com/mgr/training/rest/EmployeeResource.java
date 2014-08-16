@@ -34,14 +34,14 @@ public class EmployeeResource {
 	@Timed
 	public Object all(@Context UriInfo ui) {
 		MultivaluedMap<String, String> queryParams = ui.getQueryParameters();
-		return empStore.all(queryParams);
+		return empStore.query(queryParams);
 	}
 
 	@GET
 	@Timed
 	@Path("{id}")
 	public Object getById(@PathParam("id") String id) {
-		return empStore.find(id);
+		return empStore.findById(id);
 	}
 
 	@POST
@@ -56,6 +56,6 @@ public class EmployeeResource {
 	@Timed
 	@Path("{id}")
 	public Object deleteById(@PathParam("id") String id) {
-		return empStore.remove(id);
+		return empStore.deleteById(id);
 	}
 }

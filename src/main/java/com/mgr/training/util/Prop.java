@@ -6,6 +6,8 @@ import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.google.common.base.Throwables;
+
 public class Prop {
 	private static final Log LOG = LogFactory.getLog(Prop.class);
 	public final static PropertiesConfiguration applicationConfig = loadConfig(Const.APPLICATION_PROPERTIES);
@@ -22,6 +24,7 @@ public class Prop {
 			LOG.debug("property file loaded : " + config.getBasePath());
 		} catch (ConfigurationException e) {
 			LOG.error("Error while loading the config file in startup: " + fileName, e);
+			throw Throwables.propagate(e);
 		}
 		return config;
 	}

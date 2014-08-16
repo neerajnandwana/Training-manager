@@ -34,14 +34,14 @@ public class UserResource {
 	@Timed
 	public Object all(@Context UriInfo ui) {
 		MultivaluedMap<String, String> queryParams = ui.getQueryParameters();
-		return userStore.all(queryParams);
+		return userStore.query(queryParams);
 	}
 
 	@GET
 	@Timed
 	@Path("{id}")
 	public Object getById(@PathParam("id") String id) {
-		return userStore.find(id);
+		return userStore.findById(id);
 	}
 
 	@POST
@@ -56,6 +56,6 @@ public class UserResource {
 	@Timed
 	@Path("{id}")
 	public Object deleteById(@PathParam("id") String id) {
-		return userStore.remove(id);
+		return userStore.deleteById(id);
 	}
 }

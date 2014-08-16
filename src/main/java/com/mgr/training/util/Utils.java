@@ -1,5 +1,7 @@
 package com.mgr.training.util;
 
+import java.util.List;
+
 final public class Utils {
 	private Utils() {
 	}
@@ -9,5 +11,12 @@ final public class Utils {
 			return true;
 		}
 		return s.trim().length() == 0;
+	}
+
+	public static boolean isNullOrEmpty(final List<?> list) {
+		if(list == null){
+			return true;
+		}
+		return list.isEmpty();
 	}
 }

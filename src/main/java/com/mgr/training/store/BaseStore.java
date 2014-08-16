@@ -16,11 +16,11 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
+import com.mgr.training.util.Utils;
 
 public class BaseStore<T, ID extends Serializable> {
 	protected final Provider<Session> sessionProvider;
-	protected final int batchSize = 0; // 1000+ records committed in single
-										// transaction
+	protected final int batchSize = 0; // 1000+ records committed in single transaction
 
 	public final AsyncStoreWrapper async;
 
@@ -29,36 +29,35 @@ public class BaseStore<T, ID extends Serializable> {
 		this.async = buildAsyncStore(this, executor);
 	}
 
-	private final TypeToken<T> typeToken = new TypeToken<T>(getClass()) {
-	};
+	private final TypeToken<T> typeToken = new TypeToken<T>(getClass()) {};
 	public final Class<T> entityClass = (Class<T>) typeToken.getRawType();
 
-	public T find(final ID id) {
-		return (T) sessionProvider.get().get(entityClass, id);
+	public T findById(final ID id) {
+		return (T) currentSession().get(entityClass, id);
 	}
 
-	public List<T> find(final List<ID> ids) throws Exception {
-		Session session = sessionProvider.get();
+	public List<T> findById(final List<ID> ids) throws Exception {
+		Session session = currentSession();
 		String idProperty = session.getSessionFactory().getClassMetadata(entityClass).getIdentifierPropertyName();
 		return session.createCriteria(entityClass).add(Restrictions.in(idProperty, ids)).list();
 	}
 
 	public List<T> all() {
-		return sessionProvider.get().createCriteria(entityClass).list();
+		return currentSession().createCriteria(entityClass).list();
 	}
 
-	public List<T> all(final MultivaluedMap<String, String> queryParams) {
+	public List<T> query(final MultivaluedMap<String, String> queryParams) {
 		// if no query params is passed
 		if (queryParams == null || queryParams.isEmpty()) {
 			return all();
 		}
 
-		Session session = sessionProvider.get();
+		Session session = currentSession();
 		Criteria criteria = session.createCriteria(entityClass);
 
-		List<String> sort = queryParams.get("sort");
-		String limit = queryParams.getFirst("limit");
-		String page = queryParams.getFirst("page");
+		List<String> sort = queryParams.get("$sort");
+		String limit = queryParams.getFirst("$limit");
+		String page = queryParams.getFirst("$page");
 
 		int defaultLimit = 100;
 		int defaultPage = 1;
@@ -68,7 +67,7 @@ public class BaseStore<T, ID extends Serializable> {
 
 		// sort param should be list of sortOrder and sortProperty like
 		// sort=asc,name,desc,level,asc,age etc
-		if (sort != null && !sort.isEmpty() && sort.size() % 2 == 0) {
+		if (!Utils.isNullOrEmpty(sort) && sort.size() % 2 == 0) {
 			for (int i = 0, size = sort.size(); i <= size; i += 2) {
 				String sortOrder = sort.get(i);
 				String sortAttribute = sort.get(i + 1);
@@ -81,16 +80,16 @@ public class BaseStore<T, ID extends Serializable> {
 		}
 
 		// list pagination properties
-		if (page != null && !page.isEmpty()) {
+		if (!Utils.isNullOrEmpty(page)) {
 			try {
-				page_int = Integer.parseInt(page);
+				page_int = Integer.parseInt(page.trim());
 			} catch (NumberFormatException e) {
 				// don't do anything
 			}
 		}
 		criteria.setFirstResult(page_int - 1);
 
-		if (limit != null && !limit.isEmpty()) {
+		if (!Utils.isNullOrEmpty(limit)) {
 			try {
 				limit_int = Integer.parseInt(limit);
 			} catch (NumberFormatException e) {
@@ -103,14 +102,14 @@ public class BaseStore<T, ID extends Serializable> {
 	}
 
 	@Transactional
-	public T add(final T entity) {
-		sessionProvider.get().save(entity);
+	public T create(final T entity) {
+		currentSession().save(entity);
 		return entity;
 	}
 
 	@Transactional
-	public List<T> add(final List<T> entities) {
-		Session session = sessionProvider.get();
+	public List<T> create(final List<T> entities) {
+		Session session = currentSession();
 		for (int count = 0, size = entities.size(); count < size; count++) {
 			session.save(entities.get(count));
 			flushClearSession(count, session);
@@ -119,21 +118,21 @@ public class BaseStore<T, ID extends Serializable> {
 	}
 
 	@Transactional
-	public T remove(final T entity) {
-		sessionProvider.get().delete(entity);
+	public T delete(final T entity) {
+		currentSession().delete(entity);
 		return entity;
 	}
 
 	@Transactional
-	public T remove(final ID id) {
-		T entity = find(id);
-		sessionProvider.get().delete(entity);
+	public T deleteById(final ID id) {
+		T entity = findById(id);
+		currentSession().delete(entity);
 		return entity;
 	}
 
 	@Transactional
-	public List<T> remove(final List<T> entities) {
-		Session session = sessionProvider.get();
+	public List<T> delete(final List<T> entities) {
+		Session session = currentSession();
 		for (T entity : entities) {
 			session.delete(entity);
 		}
@@ -142,13 +141,13 @@ public class BaseStore<T, ID extends Serializable> {
 
 	@Transactional
 	public T update(final T entity) {
-		sessionProvider.get().update(entity);
+		currentSession().update(entity);
 		return entity;
 	}
 
 	@Transactional
 	public List<T> update(final List<T> entities) {
-		Session session = sessionProvider.get();
+		Session session = currentSession();
 		for (int count = 0, size = entities.size(); count < size; count++) {
 			session.update(entities.get(count));
 			flushClearSession(count, session);
@@ -157,13 +156,17 @@ public class BaseStore<T, ID extends Serializable> {
 	}
 
 	public void flushClearSession(final int counter, final Session session) {
-		if (batchSize == 0) {
-			return;
-		}
-		if (counter % batchSize == 0) {
-			session.clear();
-			session.flush();
-		}
+//		if (batchSize == 0) {
+//			return;
+//		}
+//		if (counter % batchSize == 0) {
+//			session.clear();
+//			session.flush();
+//		}
+	}
+	
+	private Session currentSession(){
+		return sessionProvider.get();
 	}
 
 	protected AsyncStoreWrapper buildAsyncStore(final BaseStore store, final ListeningExecutorService executor) {
@@ -179,20 +182,20 @@ public class BaseStore<T, ID extends Serializable> {
 			this.store = store;
 		}
 
-		public ListenableFuture<T> find(final ID id) {
+		public ListenableFuture<T> findById(final ID id) {
 			return executor.submit(new Callable<T>() {
 				@Override
 				public T call() throws Exception {
-					return store.find(id);
+					return store.findById(id);
 				}
 			});
 		}
 
-		public ListenableFuture<List<T>> find(final List<ID> ids) {
+		public ListenableFuture<List<T>> findById(final List<ID> ids) {
 			return executor.submit(new Callable<List<T>>() {
 				@Override
 				public List<T> call() throws Exception {
-					return store.find(ids);
+					return store.findById(ids);
 				}
 			});
 		}
@@ -206,47 +209,47 @@ public class BaseStore<T, ID extends Serializable> {
 			});
 		}
 
-		public ListenableFuture<T> add(final T entity) {
+		public ListenableFuture<T> create(final T entity) {
 			return executor.submit(new Callable<T>() {
 				@Override
 				public T call() throws Exception {
-					return store.add(entity);
+					return store.create(entity);
 				}
 			});
 		}
 
-		public ListenableFuture<List<T>> add(final List<T> entities) {
+		public ListenableFuture<List<T>> create(final List<T> entities) {
 			return executor.submit(new Callable<List<T>>() {
 				@Override
 				public List<T> call() throws Exception {
-					return store.add(entities);
+					return store.create(entities);
 				}
 			});
 		}
 
-		public ListenableFuture<T> remove(final T entity) {
+		public ListenableFuture<T> delete(final T entity) {
 			return executor.submit(new Callable<T>() {
 				@Override
 				public T call() throws Exception {
-					return store.remove(entity);
+					return store.delete(entity);
 				}
 			});
 		}
 
-		public ListenableFuture<T> remove(final ID id) {
+		public ListenableFuture<T> deleteById(final ID id) {
 			return executor.submit(new Callable<T>() {
 				@Override
 				public T call() throws Exception {
-					return store.remove(id);
+					return store.deleteById(id);
 				}
 			});
 		}
 
-		public ListenableFuture<List<T>> remove(final List<T> entities) {
+		public ListenableFuture<List<T>> delete(final List<T> entities) {
 			return executor.submit(new Callable<List<T>>() {
 				@Override
 				public List<T> call() throws Exception {
-					return store.remove(entities);
+					return store.delete(entities);
 				}
 			});
 		}

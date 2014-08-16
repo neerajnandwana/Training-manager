@@ -34,20 +34,21 @@ public class SeedDummyData {
 		this.passwordDigest = password;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void seedData() throws Exception {
 		Futures.successfulAsList(insertUsers(), insertEmployees(), insertTraining());
 	}
 
 	private ListenableFuture<List<User>> insertUsers() {
-		return userStore.async.add(getUsers());
+		return userStore.async.create(getUsers());
 	}
 
 	private ListenableFuture<List<Employee>> insertEmployees() {
-		return empStore.async.add(getEmployees());
+		return empStore.async.create(getEmployees());
 	}
 
 	private ListenableFuture<List<Training>> insertTraining() throws Exception {
-		return trainingStore.async.add(getTraining());
+		return trainingStore.async.create(getTraining());
 	}
 
 	private List<User> getUsers() {
@@ -83,17 +84,17 @@ public class SeedDummyData {
 	private List<Training> getTraining() throws Exception {
 		List<Training> trainings = Lists.newArrayList();
 
-		List<Employee> trainers = empStore.find(Lists.newArrayList("103", "101"));
+		List<Employee> trainers = empStore.findById(Lists.newArrayList("103", "101"));
 		List<TrainingMetadata> attendees = buildAttendedMetadataFor(Lists.newArrayList("102", "104", "105"));
 		trainings.add(buildTraining("T-001", "Java", "Learn about java", Training.Kind.SYSTEMS_AND_TOOLS, Training.Mode.CLASS_ROOM, trainers, attendees,
 				DateTime.now().toDate(), DateTime.now().plusDays(3).toDate(), 16));
 
-		trainers = empStore.find(Lists.newArrayList("104"));
+		trainers = empStore.findById(Lists.newArrayList("104"));
 		attendees = buildAttendedMetadataFor(Lists.newArrayList("101", "102", "106"));
 		trainings.add(buildTraining("T-002", "C++", "Learn about C++", Training.Kind.SYSTEMS_AND_TOOLS, Training.Mode.CLASS_ROOM, trainers, attendees, DateTime
 				.now().toDate(), DateTime.now().plusDays(3).toDate(), 16));
 
-		trainers = empStore.find(Lists.newArrayList("101", "103"));
+		trainers = empStore.findById(Lists.newArrayList("101", "103"));
 		attendees = buildAttendedMetadataFor(Lists.newArrayList("102", "104", "105"));
 		trainings.add(buildTraining("T-003", "Linux", "Learn about SDLC", Training.Kind.ANALYSIS, Training.Mode.E_LEARNING, trainers, attendees, DateTime.now()
 				.toDate(), DateTime.now().plusDays(3).toDate(), 16));

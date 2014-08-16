@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>trainingmgr</groupId>
@@ -9,7 +10,7 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<java.version>1.6</java.version>
+		<java.version>1.7</java.version>
 		<servlet.version>2.4</servlet.version>
 		<jsp.version>2.1</jsp.version>
 		<jstl.version>1.2</jstl.version>
@@ -20,11 +21,11 @@
 		<guice.version>3.0</guice.version>
 
 		<jersey.version>1.18</jersey.version>
-		<jackson.version>2.3.2</jackson.version>
-		<jacksonafterburner.version>2.3.2</jacksonafterburner.version>
+		<jackson.version>2.4.1</jackson.version>
+		<jacksonafterburner.version>2.4.1</jacksonafterburner.version>
 
-		<hibernate.version>4.2.8.Final</hibernate.version>
-		<hibernatevalidator.version>5.0.2.Final</hibernatevalidator.version>
+		<hibernate.version>4.3.5.Final</hibernate.version>
+		<hibernatevalidator.version>5.1.1.Final</hibernatevalidator.version>
 		<mysqlconnector.version>5.1.27</mysqlconnector.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<cglibnodep.version>2.2.2</cglibnodep.version>
@@ -32,7 +33,7 @@
 		<junit.version>4.11</junit.version>
 		<jcipannotations.version>1.0</jcipannotations.version>
 		<jsr305.version>1.3.9</jsr305.version>
-		<guava.version>16.0.1</guava.version>
+		<guava.version>17.0</guava.version>
 		<jodatime.version>2.3</jodatime.version>
 		<slf4j.version>1.7.0</slf4j.version>
 		<commonlang3.version>3.1</commonlang3.version>
@@ -283,6 +284,12 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
+		<!-- Hibernate c3p0 connection pool -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
 		<!-- for JPA, use hibernate-entitymanager instead of hibernate-core -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -294,6 +301,7 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>${hibernatevalidator.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>

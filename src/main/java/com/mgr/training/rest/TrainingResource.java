@@ -34,14 +34,14 @@ public class TrainingResource {
 	@Timed
 	public Object all(@Context UriInfo ui) {
 		MultivaluedMap<String, String> queryParams = ui.getQueryParameters();
-		return trainingStore.all(queryParams);
+		return trainingStore.query(queryParams);
 	}
 
 	@GET
 	@Timed
 	@Path("{id}")
 	public Object getById(@PathParam("id") String id) {
-		return trainingStore.find(id);
+		return trainingStore.findById(id);
 	}
 
 	@POST
@@ -56,6 +56,6 @@ public class TrainingResource {
 	@Timed
 	@Path("{id}")
 	public Object deleteById(@PathParam("id") String id) {
-		return trainingStore.remove(id);
+		return trainingStore.deleteById(id);
 	}
 }

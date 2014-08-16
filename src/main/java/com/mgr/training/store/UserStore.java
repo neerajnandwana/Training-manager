@@ -21,7 +21,7 @@ public class UserStore extends BaseStore<User, String> {
 	}
 
 	public User getByCredential(final String userId, final String userPass) {
-		User user = find(userId);
+		User user = findById(userId);
 		if (user == null) {
 			return null;
 		}
