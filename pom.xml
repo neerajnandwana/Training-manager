@@ -33,14 +33,14 @@
 		<junit.version>4.11</junit.version>
 		<jcipannotations.version>1.0</jcipannotations.version>
 		<jsr305.version>1.3.9</jsr305.version>
-		<guava.version>17.0</guava.version>
+		<guava.version>18.0</guava.version>
 		<jodatime.version>2.3</jodatime.version>
 		<slf4j.version>1.7.0</slf4j.version>
 		<commonlang3.version>3.1</commonlang3.version>
 		<commonfileupload.version>1.3</commonfileupload.version>
 		<commonvalidator.version>1.4.0</commonvalidator.version>
 		<commonconfig.version>1.10</commonconfig.version>
-		<metrics.version>3.0.2</metrics.version>
+		<metrics.version>3.1.0</metrics.version>
 	</properties>
 
 	<repositories>
@@ -357,44 +357,44 @@
 
 		<!-- instumentation api -->
 		<dependency>
-			<groupId>com.codahale.metrics</groupId>
+			<groupId>io.dropwizard.metrics</groupId>
 			<artifactId>metrics-core</artifactId>
 			<version>${metrics.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.codahale.metrics</groupId>
+			<groupId>io.dropwizard.metrics</groupId>
 			<artifactId>metrics-log4j</artifactId>
 			<version>${metrics.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.codahale.metrics</groupId>
+			<groupId>io.dropwizard.metrics</groupId>
 			<artifactId>metrics-jvm</artifactId>
 			<version>${metrics.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.codahale.metrics</groupId>
+			<groupId>io.dropwizard.metrics</groupId>
 			<artifactId>metrics-jersey</artifactId>
 			<version>${metrics.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.codahale.metrics</groupId>
+			<groupId>io.dropwizard.metrics</groupId>
 			<artifactId>metrics-json</artifactId>
 			<version>${metrics.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.codahale.metrics</groupId>
+			<groupId>io.dropwizard.metrics</groupId>
 			<artifactId>metrics-servlets</artifactId>
 			<version>${metrics.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.codahale.metrics</groupId>
+			<groupId>io.dropwizard.metrics</groupId>
 			<artifactId>metrics-graphite</artifactId>
 			<version>${metrics.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.palominolabs.metrics</groupId>
 			<artifactId>metrics-guice</artifactId>
-			<version>3.0.2</version>
+			<version>3.1.2</version>
 		</dependency>
 
 

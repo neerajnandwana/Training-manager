@@ -14,7 +14,7 @@ final public class Utils {
 	}
 
 	public static boolean isNullOrEmpty(final List<?> list) {
-		if(list == null){
+		if (list == null) {
 			return true;
 		}
 		return list.isEmpty();

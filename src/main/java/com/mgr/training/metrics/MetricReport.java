@@ -18,22 +18,28 @@ import com.codahale.metrics.jvm.BufferPoolMetricSet;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import com.codahale.metrics.jvm.ThreadStatesGaugeSet;
+import com.google.common.base.StandardSystemProperty;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
+import com.mgr.training.metrics.metricset.HibernateStatisticsMetricSet;
+import com.mgr.training.metrics.metricset.JvmFlagsMetricSet;
+import com.mgr.training.metrics.metricset.VmSpecsMetricSet;
 
 
 public class MetricReport {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MetricReport.class);
 	private static final MetricRegistry metricRegistry = AppMetricsServletContextListener.METRIC_REGISTRY;
-	private static final Map<Class<?>, String> customMetricName = Maps.newHashMap();
+	private static final Map<Class<? extends MetricSet>, String> customMetricName = Maps.newHashMap();
 
 	static {
+		customMetricName.put(VmSpecsMetricSet.class, "vm.specs");
 		customMetricName.put(BufferPoolMetricSet.class, "jvm.buffers");
 		customMetricName.put(GarbageCollectorMetricSet.class, "jvm.gc");
 		customMetricName.put(MemoryUsageGaugeSet.class, "jvm.memory");
 		customMetricName.put(ThreadStatesGaugeSet.class, "jvm.threads");
-		customMetricName.put(HibernateStatisticsMetricSet.class, "hibernate");
+		customMetricName.put(JvmFlagsMetricSet.class, "jvm.flags");
+		customMetricName.put(HibernateStatisticsMetricSet.class, "db.hibernate");
 	}
 	
 	@Inject
@@ -43,7 +49,7 @@ public class MetricReport {
 		}
 		
 		final String dirPath = "trainingmgr-report";
-		final String homeDir = System.getProperty("user.home");
+		final String homeDir = StandardSystemProperty.USER_HOME.value();
 		final File file = new File(homeDir, dirPath);
 
 		try {

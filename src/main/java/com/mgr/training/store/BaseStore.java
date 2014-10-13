@@ -58,6 +58,8 @@ public class BaseStore<T, ID extends Serializable> {
 		List<String> sort = queryParams.get("$sort");
 		String limit = queryParams.getFirst("$limit");
 		String page = queryParams.getFirst("$page");
+		String like = queryParams.getFirst("$like");
+		String ignoreCase = queryParams.getFirst("$ignore_case");
 
 		int defaultLimit = 100;
 		int defaultPage = 1;
@@ -97,6 +99,10 @@ public class BaseStore<T, ID extends Serializable> {
 			}
 		}
 		criteria.setMaxResults(limit_int);
+		
+		if(!Utils.isNullOrEmpty(like)){
+			
+		}
 
 		return criteria.list();
 	}

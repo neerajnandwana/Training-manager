@@ -24,7 +24,7 @@ public class Routes {
 	}
 
 	public static String home(HttpServletRequest req) {
-		return String.format("%s/s/home", path(req));
+		return String.format("%s/sdt/home", path(req));
 	}
 
 	public static String logout(HttpServletRequest req) {

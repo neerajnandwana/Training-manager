@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Stopwatch;
 import com.google.common.base.Throwables;
 
@@ -49,7 +49,7 @@ public class AppResponse implements Serializable {
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this.getClass()).add("result", result).add("meta", meta).toString();
+		return MoreObjects.toStringHelper(this.getClass()).add("result", result).add("meta", meta).toString();
 	}
 
 	private class Meta implements Serializable {
@@ -94,7 +94,7 @@ public class AppResponse implements Serializable {
 
 		@Override
 		public String toString() {
-			return Objects.toStringHelper(this.getClass())
+			return MoreObjects.toStringHelper(this.getClass())
 					.add("code", code)
 					.add("responseTime", getResponseTime())
 					.add("error", error)

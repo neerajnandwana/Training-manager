@@ -1,4 +1,4 @@
-package com.mgr.training.metrics;
+package com.mgr.training.metrics.metricset;
 
 import java.util.Collections;
 import java.util.Date;
@@ -17,7 +17,7 @@ import com.google.inject.Singleton;
 import com.mgr.training.util.Const;
 
 /**
- * A set of gauges for the Hibernate statistics.
+ * A set of gauges for the Hibernate getStatistics().
  */
 @Singleton
 public class HibernateStatisticsMetricSet implements MetricSet {
@@ -28,6 +28,10 @@ public class HibernateStatisticsMetricSet implements MetricSet {
 		this.sessionProvider = sessionProvider;
 	}
 
+	public Statistics currentSessionStatistics() {
+		return sessionProvider.get().getSessionFactory().getStatistics();
+	}
+
 	@Override
 	public Map<String, Metric> getMetrics() {
 		final Map<String, Metric> gauges = new HashMap<String, Metric>();
@@ -35,44 +39,38 @@ public class HibernateStatisticsMetricSet implements MetricSet {
 		gauges.put("StartTime", new Gauge<String>() {
 			@Override
 			public String getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				Date date = new Date(statistics.getStartTime());
+				Date date = new Date(currentSessionStatistics().getStartTime());
 				return Const.ISO_DATETIME_FORMAT.format(date);
 			}
 		});
 		gauges.put("ConnectCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getConnectCount();
+				return currentSessionStatistics().getConnectCount();
 			}
 		});
 		gauges.put("FlushCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getFlushCount();
+				return currentSessionStatistics().getFlushCount();
 			}
 		});
 		gauges.put("PrepareStatementCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getPrepareStatementCount();
+				return currentSessionStatistics().getPrepareStatementCount();
 			}
 		});
 		gauges.put("CloseStatementCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getCloseStatementCount();
+				return currentSessionStatistics().getCloseStatementCount();
 			}
 		});
 		gauges.put("OptimisticFailureCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getOptimisticFailureCount();
+				return currentSessionStatistics().getOptimisticFailureCount();
 			}
 		});
 		addCollectionStatistics(gauges);
@@ -88,15 +86,13 @@ public class HibernateStatisticsMetricSet implements MetricSet {
 		gauges.put("TransactionCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getTransactionCount();
+				return currentSessionStatistics().getTransactionCount();
 			}
 		});
 		gauges.put("SuccessfulTransactionCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getSuccessfulTransactionCount();
+				return currentSessionStatistics().getSuccessfulTransactionCount();
 			}
 		});
 	}
@@ -105,15 +101,13 @@ public class HibernateStatisticsMetricSet implements MetricSet {
 		gauges.put("SessionCloseCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getSessionCloseCount();
+				return currentSessionStatistics().getSessionCloseCount();
 			}
 		});
 		gauges.put("SessionOpenCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getSessionOpenCount();
+				return currentSessionStatistics().getSessionOpenCount();
 			}
 		});
 	}
@@ -122,50 +116,43 @@ public class HibernateStatisticsMetricSet implements MetricSet {
 		gauges.put("Queries", new Gauge<String[]>() {
 			@Override
 			public String[] getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getQueries();
+				return currentSessionStatistics().getQueries();
 			}
 		});
 		gauges.put("QueryCacheHitCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getQueryCacheHitCount();
+				return currentSessionStatistics().getQueryCacheHitCount();
 			}
 		});
 		gauges.put("QueryCacheMissCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getQueryCacheMissCount();
+				return currentSessionStatistics().getQueryCacheMissCount();
 			}
 		});
 		gauges.put("QueryCachePutCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getQueryCachePutCount();
+				return currentSessionStatistics().getQueryCachePutCount();
 			}
 		});
 		gauges.put("QueryExecutionCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getQueryExecutionCount();
+				return currentSessionStatistics().getQueryExecutionCount();
 			}
 		});
 		gauges.put("QueryExecutionMaxTime", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getQueryExecutionMaxTime();
+				return currentSessionStatistics().getQueryExecutionMaxTime();
 			}
 		});
 		gauges.put("QueryExecutionMaxTimeQueryString", new Gauge<String>() {
 			@Override
 			public String getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getQueryExecutionMaxTimeQueryString();
+				return currentSessionStatistics().getQueryExecutionMaxTimeQueryString();
 			}
 		});
 	}
@@ -174,50 +161,43 @@ public class HibernateStatisticsMetricSet implements MetricSet {
 		gauges.put("NaturalIdCacheHitCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getNaturalIdCacheHitCount();
+				return currentSessionStatistics().getNaturalIdCacheHitCount();
 			}
 		});
 		gauges.put("NaturalIdCacheMissCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getNaturalIdCacheMissCount();
+				return currentSessionStatistics().getNaturalIdCacheMissCount();
 			}
 		});
 		gauges.put("NaturalIdCachePutCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getNaturalIdCachePutCount();
+				return currentSessionStatistics().getNaturalIdCachePutCount();
 			}
 		});
 		gauges.put("NaturalIdQueryExecutionCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getNaturalIdQueryExecutionCount();
+				return currentSessionStatistics().getNaturalIdQueryExecutionCount();
 			}
 		});
 		gauges.put("NaturalIdQueryExecutionMaxTime", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getNaturalIdQueryExecutionMaxTime();
+				return currentSessionStatistics().getNaturalIdQueryExecutionMaxTime();
 			}
 		});
 		gauges.put("NaturalIdQueryExecutionMaxTimeRegion", new Gauge<String>() {
 			@Override
 			public String getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getNaturalIdQueryExecutionMaxTimeRegion();
+				return currentSessionStatistics().getNaturalIdQueryExecutionMaxTimeRegion();
 			}
 		});
 		gauges.put("NaturalIdCachePutCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getNaturalIdCachePutCount();
+				return currentSessionStatistics().getNaturalIdCachePutCount();
 			}
 		});
 	}
@@ -226,43 +206,37 @@ public class HibernateStatisticsMetricSet implements MetricSet {
 		gauges.put("EntityNames", new Gauge<String[]>() {
 			@Override
 			public String[] getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getEntityNames();
+				return currentSessionStatistics().getEntityNames();
 			}
 		});
 		gauges.put("EntityDeleteCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getEntityDeleteCount();
+				return currentSessionStatistics().getEntityDeleteCount();
 			}
 		});
 		gauges.put("EntityFetchCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getEntityFetchCount();
+				return currentSessionStatistics().getEntityFetchCount();
 			}
 		});
 		gauges.put("EntityInsertCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getEntityInsertCount();
+				return currentSessionStatistics().getEntityInsertCount();
 			}
 		});
 		gauges.put("EntityLoadCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getEntityLoadCount();
+				return currentSessionStatistics().getEntityLoadCount();
 			}
 		});
 		gauges.put("EntityUpdateCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getEntityUpdateCount();
+				return currentSessionStatistics().getEntityUpdateCount();
 			}
 		});
 	}
@@ -271,36 +245,31 @@ public class HibernateStatisticsMetricSet implements MetricSet {
 		gauges.put("CollectionFetchCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getCollectionFetchCount();
+				return currentSessionStatistics().getCollectionFetchCount();
 			}
 		});
 		gauges.put("CollectionLoadCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getCollectionLoadCount();
+				return currentSessionStatistics().getCollectionLoadCount();
 			}
 		});
 		gauges.put("CollectionRecreateCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getCollectionRecreateCount();
+				return currentSessionStatistics().getCollectionRecreateCount();
 			}
 		});
 		gauges.put("CollectionRemoveCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getCollectionRemoveCount();
+				return currentSessionStatistics().getCollectionRemoveCount();
 			}
 		});
 		gauges.put("CollectionUpdateCount", new Gauge<Long>() {
 			@Override
 			public Long getValue() {
-				final Statistics statistics = sessionProvider.get().getSessionFactory().getStatistics();
-				return statistics.getCollectionUpdateCount();
+				return currentSessionStatistics().getCollectionUpdateCount();
 			}
 		});
 	}

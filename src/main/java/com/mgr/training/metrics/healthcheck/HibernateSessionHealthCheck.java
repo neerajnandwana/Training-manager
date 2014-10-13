@@ -6,13 +6,18 @@ import com.codahale.metrics.health.HealthCheck;
 import com.google.common.base.Throwables;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
+import com.mgr.training.util.Const;
+import com.mgr.training.util.Prop;
 
+@Singleton
 public class HibernateSessionHealthCheck extends HealthCheck {
-	private final String validationQuery = "select 1";
+	private final String validationQuery;
 	private final Provider<Session> sessionProvider;
 
 	@Inject
 	public HibernateSessionHealthCheck(Provider<Session> sessionProvider) {
+		this.validationQuery = Prop.applicationConfig.getString(Const.DB_QUERY_KEY, "SELECT 1");
 		this.sessionProvider = sessionProvider;
 	}
 

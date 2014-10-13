@@ -89,19 +89,19 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 		final Module servletModule = new ServletModule() {
 			@Override
 			protected void configureServlets() {
-				filter("/s/*").through(SecurityFilter.class);
+				filter("/s/*", "/sdt/*").through(SecurityFilter.class);
 				filter("/*").through(ThreadNameFilter.class);
 				filter("/*").through(CharsetEncodingFilter.class);
 				filter("/*").through(DisableUrlSessionFilter.class);
 				filter("/*").through(SlowRequestFilter.class);
-				filter("/*").through(PersistFilter.class);
+				filter("/dt/*", "/sdt/*").through(PersistFilter.class);
 
-				serve("/", "/login").with(LoginServlet.class);
+				serve("/dt/", "/dt/login").with(LoginServlet.class);
 				serve("/logout").with(LogoutServlet.class);
-				serve("/s/home").with(HomeServlet.class);
+				serve("/sdt/home").with(HomeServlet.class);
 
 				// bootstrap the dummy data for testing
-				serve("/dummydata").with(InsertDummyData.class);
+				serve("/dt/dummydata").with(InsertDummyData.class);
 
 				bind(ViewRenderer.class).to(FreemarkerViewRenderer.class).asEagerSingleton();
 				bind(Long.class).annotatedWith(Names.named("SlowRequestThreshold")).toInstance(1000L); 

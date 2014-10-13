@@ -13,7 +13,7 @@ public class AppSession {
 
 	private User user = LOGGED_OUT;
 
-	private HttpSession httpSession;
+	private final HttpSession httpSession;
 
 	@Inject
 	public AppSession(HttpSession httpSession) {
