@@ -21,8 +21,8 @@ import com.mgr.training.metrics.metricset.VmSpecsMetricSet;
 import com.palominolabs.metrics.guice.MetricsInstrumentationModule;
 
 public class AppInstrumentationModule extends AbstractModule {
-	final MetricRegistry metricRegistry = AppMetricsServletContextListener.METRIC_REGISTRY;
-	final HealthCheckRegistry healthCheckRegistry = AppHealthCheckServletContextListener.HEALTH_CHECK_REGISTRY;
+	private static final MetricRegistry metricRegistry = AppMetricsServletContextListener.METRIC_REGISTRY;
+	private static final HealthCheckRegistry healthCheckRegistry = AppHealthCheckServletContextListener.HEALTH_CHECK_REGISTRY;
 	
 	@Override
 	protected void configure() {		
@@ -43,8 +43,11 @@ public class AppInstrumentationModule extends AbstractModule {
 		healthChecksBinder.addBinding().to(HibernateSessionHealthCheck.class);
 
 		install(new MetricsInstrumentationModule(metricRegistry));
-		install(new AppInstrumentationServletModule());
+		install(new AppInstrumentationServletModule(healthCheckRegistry));
 
+		bind(MetricRegistry.class).toInstance(metricRegistry);
+		bind(HealthCheckRegistry.class).toInstance(healthCheckRegistry);
+		
 		//start metric report
 		bind(MetricReport.class).asEagerSingleton();
 	}

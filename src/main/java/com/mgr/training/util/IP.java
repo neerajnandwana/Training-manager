@@ -40,7 +40,7 @@ public class IP {
 		String ip = null;
 		for(String header: HEADERS_TO_TRY){
 			ip = request.getHeader(header);
-			if(!Utils.isNullOrEmpty(header) && !"unknown".equalsIgnoreCase(header)){
+			if(!Utils.isNullOrEmpty(ip) && !"unknown".equalsIgnoreCase(ip)){
 				for(String _ip: ipSplitter.split(ip)){
 					if(!isPrivate(_ip)){
 						return _ip;

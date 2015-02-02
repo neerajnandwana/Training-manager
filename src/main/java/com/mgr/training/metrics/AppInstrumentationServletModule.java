@@ -2,7 +2,6 @@ package com.mgr.training.metrics;
 
 import java.util.Set;
 
-import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheck;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.codahale.metrics.servlets.AdminServlet;
@@ -23,9 +22,12 @@ public class AppInstrumentationServletModule extends ServletModule {
 	private static final String THREADS_URI = METRICS_ROOT_URI + AdminServlet.DEFAULT_THREADS_URI;
 	private static final String HEALTHCHECK_URI = METRICS_ROOT_URI + AdminServlet.DEFAULT_HEALTHCHECK_URI;
 
-	final MetricRegistry metricRegistry = AppMetricsServletContextListener.METRIC_REGISTRY;
-	final HealthCheckRegistry healthCheckRegistry = AppHealthCheckServletContextListener.HEALTH_CHECK_REGISTRY;
+	final HealthCheckRegistry healthCheckRegistry;
 
+	public AppInstrumentationServletModule(HealthCheckRegistry healthCheckRegistry){
+		this.healthCheckRegistry = healthCheckRegistry;
+	}
+	
 	@Override
 	protected void configureServlets() {
 		install(new AdminServletModule());

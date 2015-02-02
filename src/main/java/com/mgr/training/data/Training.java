@@ -57,7 +57,11 @@ public class Training implements Serializable {
 	}
 
 	enum Kind {
-		ANALYSIS("Analysis"), BUSINESS_AWARENESS("Business Awareness"), FINANCE("Finance"), SOFT_SKILLS("Soft Skills"), SYSTEMS_AND_TOOLS("System and Tools");
+		ANALYSIS("Analysis"), 
+		BUSINESS_AWARENESS("Business Awareness"), 
+		FINANCE("Finance"), 
+		SOFT_SKILLS("Soft Skills"), 
+		SYSTEMS_AND_TOOLS("System and Tools");
 
 		private final String name;
 

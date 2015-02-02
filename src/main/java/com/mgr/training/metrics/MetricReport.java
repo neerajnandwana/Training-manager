@@ -29,7 +29,6 @@ import com.mgr.training.metrics.metricset.VmSpecsMetricSet;
 
 public class MetricReport {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MetricReport.class);
-	private static final MetricRegistry metricRegistry = AppMetricsServletContextListener.METRIC_REGISTRY;
 	private static final Map<Class<? extends MetricSet>, String> customMetricName = Maps.newHashMap();
 
 	static {
@@ -43,7 +42,7 @@ public class MetricReport {
 	}
 	
 	@Inject
-	public MetricReport(Set<MetricSet> metricSets) {		
+	public MetricReport(Set<MetricSet> metricSets, MetricRegistry metricRegistry) {		
 		for (MetricSet metricSet : metricSets) {
 			metricRegistry.register(name(metricSet.getClass()), metricSet);
 		}

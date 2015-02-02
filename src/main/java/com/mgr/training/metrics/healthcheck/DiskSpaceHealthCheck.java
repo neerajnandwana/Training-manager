@@ -5,11 +5,11 @@ import com.mgr.training.util.Const;
 import com.mgr.training.util.Prop;
 
 public class DiskSpaceHealthCheck extends HealthCheck {
+	private final long defaultThreshold = 10 * 1024 * 1024;//10 GB default threshold
 	private final long threshold;
 
 	public DiskSpaceHealthCheck() {
-		//10 GB default threshold
-		threshold = Prop.applicationConfig.getLong(Const.DISKSPACE_THRESHOLD_KEY, 10 * 1024 * 1024);
+		threshold = Prop.applicationConfig.getLong(Const.DISKSPACE_THRESHOLD_KEY, defaultThreshold);
 	}
 
 	@Override
