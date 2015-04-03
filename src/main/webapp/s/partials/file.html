@@ -1,0 +1,34 @@
+<div class="row">
+	<div class="col-lg-6">
+		<h1>Files</h1>
+	</div>
+	<div class="col-lg-6">
+		<input type="text" data-ng-model="search" class="form-control grid-search" placeholder="Search"/>
+	</div>
+</div>
+<table class="table table-hover table-striped">
+	<thead>
+		<tr>
+			<th>File</th>
+			<!-- <th>Description</th> -->
+			<th>Created On</th>
+			<th>Created By</th>
+			<th>Size</th>
+			<th><a href="#/file/new"><i class="glyphicon glyphicon-plus"></i></a></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr data-ng-repeat="file in files | filter:search | orderBy:'id'" class="slide-animation">
+			<td><a data-ng-href="{{file.link}}">{{file.name}}</a></td>
+			<!-- <td>{{file.desc}}</td> -->
+			<td>{{file.created | date:"MM/dd/yyyy 'at' h:mma"}}</td>
+			<td>{{file.author.displayName}}</td>
+			<td>{{file.size}}</td>
+			<td>		
+				<a data-ng-href="#/file" data-ng-click="destroy(file.id)"  data-confirmation-needed="Are you really want to delete file {{file.name}}?">
+					<i class="glyphicon glyphicon-trash"></i>
+				</a>
+			</td>
+		</tr>
+	</tbody>
+</table>

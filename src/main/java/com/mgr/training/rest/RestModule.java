@@ -3,6 +3,7 @@ package com.mgr.training.rest;
 import static com.google.inject.matcher.Matchers.annotatedWith;
 import static com.google.inject.matcher.Matchers.any;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -33,13 +34,14 @@ public class RestModule extends JerseyServletModule {
 		bind(UserResource.class);
 		bind(EmployeeResource.class);
 		bind(TrainingResource.class);
+		bind(AttachmentResource.class);
 
 		/* bind jackson converters for JAXB/JSON serialization */
 		bind(JacksonJsonProvider.class).in(Scopes.SINGLETON);
 		bind(MessageBodyReader.class).to(JacksonJsonProvider.class);
 		bind(MessageBodyWriter.class).to(JacksonJsonProvider.class);
 
-		serve("/r/*").with(GuiceContainer.class);
+		serve("/r/*", "/sr/*").with(GuiceContainer.class);
 
 		/* create wrapper for all rest service response */
 		MethodInterceptor interceptor = new RestResponseInterceptor();
@@ -59,6 +61,10 @@ public class RestModule extends JerseyServletModule {
 			Object result = null;
 			try {
 				result = methodInvocation.proceed();
+				if(result instanceof ServletOutputStream){
+					response.setResult(null);
+					return result;
+				}
 				response.setResult(result);
 			} catch (Throwable e) {
 				response.setError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e);

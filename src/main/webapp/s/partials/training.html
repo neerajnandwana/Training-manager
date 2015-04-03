@@ -17,11 +17,11 @@
 	</thead>
 	<tbody>
 		<tr data-ng-repeat="training in trainings | filter:search | orderBy:'trainingId'" class="slide-animation">
-			<td><a href="#/training/view/{{training.trainingId}}">{{training.trainingId}}</a></td>
+			<td><a data-ng-href="#/training/view/{{training.trainingId}}">{{training.trainingId}}</a></td>
 			<td>{{training.trainingTitle}}</td>
 			<td>{{training.description}}</td>
 			<td>
-				<a href="#/training/edit/{{training.trainingId}}"><i class="glyphicon glyphicon-pencil"></i></a>
+				<a data-ng-href="#/training/edit/{{training.trainingId}}"><i class="glyphicon glyphicon-pencil"></i></a>
 				<span>&nbsp;&nbsp;</span>				
 				<a href="#/training" data-ng-click="destroy(training.trainingId)"  data-confirmation-needed="Are you really want to delete training {{training.trainingId}}?">
 					<i class="glyphicon glyphicon-trash"></i>

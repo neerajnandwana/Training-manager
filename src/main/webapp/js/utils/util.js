@@ -1,5 +1,6 @@
 var Util = (function() {
-	var uid = ['0', '0', '0'];
+	var uid = ['0', '0', '0'],
+		byteSizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 	return {
 		/* return the guid which is unique to the page and it will never overflow as it is a string*/
 		nextUid : function() {
@@ -46,7 +47,7 @@ var Util = (function() {
 			return $inject;
 		},
 		
-		namespace : function(){
+		namespace: function(){
             var len1 = arguments.length,
                 i = 0,
                 len2,
@@ -70,6 +71,15 @@ var Util = (function() {
                 }
             }
             return current;
-        }
+        },
+        /* convert bytes to KB, MB etc*/
+        bytesToSize: function(bytes) {
+			if(bytes == 0) {
+				return '0 Byte';
+			}
+			var k = 1000,
+				i = Math.floor(Math.log(bytes) / Math.log(k));
+			return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + byteSizes[i];
+		}
 	};
 })();

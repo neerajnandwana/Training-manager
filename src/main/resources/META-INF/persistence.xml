@@ -13,6 +13,7 @@
               <class>com.mgr.training.data.Employee</class>
               <class>com.mgr.training.data.Training</class>
               <class>com.mgr.training.data.TrainingMetadata</class>
+              <class>com.mgr.training.data.Attachment</class>
 
 			  <exclude-unlisted-classes>false</exclude-unlisted-classes>
 

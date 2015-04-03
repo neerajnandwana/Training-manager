@@ -17,11 +17,11 @@
 	</thead>
 	<tbody>
 		<tr data-ng-repeat="employee in employees | filter:search | orderBy:'id'" class="slide-animation">
-			<td><a href="#/employee/view/{{employee.id}}">{{employee.id}}</a></td>
+			<td><a data-ng-href="#/employee/view/{{employee.id}}">{{employee.id}}</a></td>
 			<td>{{employee.name}}</td>
 			<td>{{employee.email}}</td>
 			<td>
-				<a href="#/employee/edit/{{employee.id}}"><i class="glyphicon glyphicon-pencil"></i></a>
+				<a data-ng-href="#/employee/edit/{{employee.id}}"><i class="glyphicon glyphicon-pencil"></i></a>
 				<span>&nbsp;&nbsp;</span>				
 				<a href="#/employee" data-ng-click="destroy(employee.id)"  data-confirmation-needed="Are you really want to delete employee {{employee.id}}?">
 					<i class="glyphicon glyphicon-trash"></i>

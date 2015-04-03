@@ -21,6 +21,8 @@ app.App.config(['$provide', '$routeProvider', '$datepickerProvider', function($p
 		when('/user/new',	  		{templateUrl: '../s/partials/user-detail.html', 		controller: 'UserCtrl'}).
 		when('/user/view/:id',	  	{templateUrl: '../s/partials/user-detail.html', 		controller: 'UserCtrl'}).
 		when('/user/edit/:id',	  	{templateUrl: '../s/partials/user-detail.html', 		controller: 'UserCtrl'}).
+		when('/file',	  			{templateUrl: '../s/partials/file.html', 				controller: 'FileCtrl'}).
+		when('/file/new',	  		{templateUrl: '../s/partials/file-upload.html', 		controller: 'FileCtrl'}).
 		otherwise({redirectTo: '/home'});
 	
 	angular.extend($datepickerProvider.defaults, {

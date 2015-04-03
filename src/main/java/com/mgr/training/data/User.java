@@ -1,5 +1,9 @@
 package com.mgr.training.data;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,6 +14,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -73,11 +79,24 @@ public class User implements Serializable {
 		return ANONYMOUS_USERNAME;
 	}
 
-	public byte[] getPassword() {
-		return password;
+	public Password getPassword() throws IOException, ClassNotFoundException {
+		if (password == null) {
+			return null;
+		}
+		ByteArrayInputStream byteIn = new ByteArrayInputStream(password.clone());
+		ObjectInputStream in = new ObjectInputStream(byteIn);
+		Password obj = (Password) in.readObject();
+		in.close();
+		return obj;
 	}
 
-	public void setPassword(byte[] password) {
-		this.password = password;
+	//store password as serialize java object
+	public void setPassword(Password password) throws IOException {
+		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+		ObjectOutputStream objOut = new ObjectOutputStream(byteOut);
+		objOut.writeObject(password);
+		objOut.close();
+		byteOut.close();
+		this.password = byteOut.toByteArray();
 	}
 }

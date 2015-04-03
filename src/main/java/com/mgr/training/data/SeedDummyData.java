@@ -1,18 +1,17 @@
 package com.mgr.training.data;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import org.joda.time.DateTime;
 
 import com.google.common.collect.Lists;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.mgr.training.auth.PasswordDigest;
 import com.mgr.training.data.Training.Kind;
 import com.mgr.training.data.Training.Mode;
 import com.mgr.training.store.EmployeeStore;
@@ -24,34 +23,21 @@ public class SeedDummyData {
 	private final UserStore userStore;
 	private final EmployeeStore empStore;
 	private final TrainingStore trainingStore;
-	private final PasswordDigest passwordDigest;
 
 	@Inject
-	public SeedDummyData(UserStore userStore, EmployeeStore empStore, TrainingStore trainingStore, PasswordDigest password) {
+	public SeedDummyData(UserStore userStore, EmployeeStore empStore, TrainingStore trainingStore) throws Exception {
 		this.userStore = userStore;
 		this.empStore = empStore;
 		this.trainingStore = trainingStore;
-		this.passwordDigest = password;
+	}
+	
+	public void seedData() throws Exception{
+		userStore.create(getUsers());
+		empStore.create(getEmployees());
+		trainingStore.create(getTraining());		
 	}
 
-	@SuppressWarnings("unchecked")
-	public void seedData() throws Exception {
-		Futures.successfulAsList(insertUsers(), insertEmployees(), insertTraining());
-	}
-
-	private ListenableFuture<List<User>> insertUsers() {
-		return userStore.async.create(getUsers());
-	}
-
-	private ListenableFuture<List<Employee>> insertEmployees() {
-		return empStore.async.create(getEmployees());
-	}
-
-	private ListenableFuture<List<Training>> insertTraining() throws Exception {
-		return trainingStore.async.create(getTraining());
-	}
-
-	private List<User> getUsers() {
+	private List<User> getUsers() throws IOException {
 		int lastId = 106;
 		List<User> users = Lists.newArrayList();
 		users.add(buildUser("Robert", "100", "welcome100"));
@@ -102,11 +88,11 @@ public class SeedDummyData {
 		return trainings;
 	}
 
-	private User buildUser(String displayName, String userId, String password) {
+	private User buildUser(String displayName, String userId, String password) throws IOException {
 		User user = new User();
 		user.setDisplayName(displayName);
 		user.setUserId(userId);
-		user.setPassword(passwordDigest.digest(password));
+		user.setPassword(new Password(password.toCharArray()));
 		return user;
 	}
 
@@ -149,6 +135,7 @@ public class SeedDummyData {
 	private TrainingMetadata buildAttendedMetadata(String attendeesId) {
 		TrainingMetadata meta = new TrainingMetadata();
 		meta.setAttend(true);
+		meta.setId(UUID.randomUUID().toString());
 		meta.setAttendeesId(attendeesId);
 		meta.setFeedback("Feedback by : " + attendeesId);
 		meta.setHoursCompleted(5);

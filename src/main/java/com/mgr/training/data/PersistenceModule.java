@@ -26,6 +26,7 @@ public class PersistenceModule extends AbstractModule {
 		install(new JpaPersistModule(Const.PERSISTENCE_UNIT_NAME).properties(prop));
 
 		// configure data service
+		bind(Attachment.class);
 		bind(EmployeeStore.class);
 		bind(TrainingStore.class);
 		bind(UserStore.class);

@@ -1,18 +1,23 @@
 'use strict';
 
 app.services.factory('baseService', ['$http', '$q', function($http, $q){
-    var serviceBase = '../r/',
+    var serviceBase = '../sr/',
 		factory = {};
 
     function normalizeSubresource(res){
     	return res ? '/'+res : '';
     }
     
-	factory.getResourceFn = function (resource){
+    factory.getServiceUrl = function(resource, subresource){
+    	return serviceBase + resource + normalizeSubresource(subresource);
+    };
+    
+	factory.getResourceFn = function (resource, transformFn){
 		return function(subresource){
 			var service = serviceBase + resource + normalizeSubresource(subresource);
 			return $http.get(service).then(function (response) {
-		        return { results: response.data.result };
+				( transformFn || _.noop)(response.data.result);
+		        return { results:  response.data.result};
 		    }, function (error) {
 		        console.log(error);
 		    });			

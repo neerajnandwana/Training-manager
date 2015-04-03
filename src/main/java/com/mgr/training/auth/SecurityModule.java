@@ -6,7 +6,6 @@ public class SecurityModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(PasswordDigest.class);
 	}
 
 }

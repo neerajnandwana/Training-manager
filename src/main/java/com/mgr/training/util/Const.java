@@ -28,6 +28,7 @@ public class Const {
 
 	public static final String APPLICATION_PROPERTIES = "application.properties";
 	public static final String PERSISTENCE_PROPERTIES = "persistence.properties";
+	public static final String APPLICATION_ENV_MODE = "app.env.mode";
 
 	static {
 		ISO_DATETIME_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));

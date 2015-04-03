@@ -76,9 +76,15 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 				install(new PersistenceModule());
 				install(new RestModule());
 
-				bind(SeedDummyData.class);
 				bind(Tasks.class);
 				bind(ListeningExecutorService.class).toInstance(executerService);
+				
+				bind(SeedDummyData.class);
+				
+				if(Prop.isDevMode()){
+					//bootstrap seed data					
+				}
+				
 				LOG.info("application modules initialized.");
 			}
 		};
@@ -89,19 +95,19 @@ public class GuiceServletConfig extends GuiceServletContextListener {
 		final Module servletModule = new ServletModule() {
 			@Override
 			protected void configureServlets() {
-				filter("/s/*", "/sdt/*").through(SecurityFilter.class);
+				filter("/s/*", "/sr/*").through(SecurityFilter.class);
 				filter("/*").through(ThreadNameFilter.class);
 				filter("/*").through(CharsetEncodingFilter.class);
 				filter("/*").through(DisableUrlSessionFilter.class);
 				filter("/*").through(SlowRequestFilter.class);
-				filter("/dt/*", "/sdt/*").through(PersistFilter.class);
+				filter("/*").through(PersistFilter.class);
 
-				serve("/dt/", "/dt/login").with(LoginServlet.class);
+				serve("/", "/login").with(LoginServlet.class);
 				serve("/logout").with(LogoutServlet.class);
-				serve("/sdt/home").with(HomeServlet.class);
+				serve("/s/home").with(HomeServlet.class);
 
-				// bootstrap the dummy data for testing
-				serve("/dt/dummydata").with(InsertDummyData.class);
+				// bootstrap the dummy data for testing				
+				serve("/dummydata").with(InsertDummyData.class);
 
 				bind(ViewRenderer.class).to(FreemarkerViewRenderer.class).asEagerSingleton();
 				bind(Long.class).annotatedWith(Names.named("SlowRequestThreshold")).toInstance(1000L); 

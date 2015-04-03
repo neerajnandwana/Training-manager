@@ -20,7 +20,7 @@ import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import com.codahale.metrics.jvm.ThreadStatesGaugeSet;
 import com.google.common.base.StandardSystemProperty;
 import com.google.common.base.Throwables;
-import com.google.common.collect.Maps;
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.mgr.training.metrics.metricset.HibernateStatisticsMetricSet;
 import com.mgr.training.metrics.metricset.JvmFlagsMetricSet;
@@ -29,17 +29,15 @@ import com.mgr.training.metrics.metricset.VmSpecsMetricSet;
 
 public class MetricReport {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MetricReport.class);
-	private static final Map<Class<? extends MetricSet>, String> customMetricName = Maps.newHashMap();
-
-	static {
-		customMetricName.put(VmSpecsMetricSet.class, "vm.specs");
-		customMetricName.put(BufferPoolMetricSet.class, "jvm.buffers");
-		customMetricName.put(GarbageCollectorMetricSet.class, "jvm.gc");
-		customMetricName.put(MemoryUsageGaugeSet.class, "jvm.memory");
-		customMetricName.put(ThreadStatesGaugeSet.class, "jvm.threads");
-		customMetricName.put(JvmFlagsMetricSet.class, "jvm.flags");
-		customMetricName.put(HibernateStatisticsMetricSet.class, "db.hibernate");
-	}
+	private static final Map<Class<? extends MetricSet>, String> customMetricName = ImmutableMap.<Class<? extends MetricSet>, String>builder()
+						.put(VmSpecsMetricSet.class, 				"vm.specs")
+						.put(BufferPoolMetricSet.class, 			"jvm.buffers")
+						.put(GarbageCollectorMetricSet.class, 		"jvm.gc")
+						.put(MemoryUsageGaugeSet.class, 			"jvm.memory")
+						.put(ThreadStatesGaugeSet.class, 			"jvm.threads")
+						.put(JvmFlagsMetricSet.class, 				"jvm.flags")
+						.put(HibernateStatisticsMetricSet.class, 	"db.hibernate")
+						.build();
 	
 	@Inject
 	public MetricReport(Set<MetricSet> metricSets, MetricRegistry metricRegistry) {		

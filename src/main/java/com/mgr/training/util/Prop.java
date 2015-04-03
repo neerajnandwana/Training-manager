@@ -28,4 +28,9 @@ public class Prop {
 		}
 		return config;
 	}
+
+	public static boolean isDevMode() {
+		String mode = applicationConfig.getString(Const.APPLICATION_ENV_MODE, "prod");
+		return "dev".equalsIgnoreCase(mode);
+	}
 }

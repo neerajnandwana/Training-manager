@@ -50,4 +50,14 @@ public class IP {
 		}
 		return request.getRemoteAddr();
 	}
+	
+	public static String getHostNameFromIP(String ip){
+		InetAddress addr;
+		try {
+			addr = InetAddress.getByName(ip);
+			return  addr.getHostName();
+		} catch (UnknownHostException e) {
+		}
+		return "*******";
+	}
 }

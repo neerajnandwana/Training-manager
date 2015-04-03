@@ -1,5 +1,6 @@
 package com.mgr.training.store;
 
+import java.io.IOException;
 import java.util.concurrent.Callable;
 
 import org.hibernate.Session;
@@ -8,24 +9,21 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.mgr.training.auth.PasswordDigest;
 import com.mgr.training.data.User;
 
 public class UserStore extends BaseStore<User, String> {
-	private final PasswordDigest password;
 
 	@Inject
-	public UserStore(Provider<Session> session, ListeningExecutorService executor, PasswordDigest password) {
+	public UserStore(Provider<Session> session, ListeningExecutorService executor) {
 		super(session, executor);
-		this.password = password;
 	}
 
-	public User getByCredential(final String userId, final String userPass) {
+	public User getByCredential(final String userId, final String userPass) throws ClassNotFoundException, IOException {
 		User user = findById(userId);
 		if (user == null) {
 			return null;
 		}
-		boolean isAuthorize = password.verify(user.getPassword(), userPass);
+		boolean isAuthorize = user.getPassword().verify(userPass.toCharArray());//password.verify(user.getPassword(), userPass);
 		return isAuthorize ? user : null;
 	}
 

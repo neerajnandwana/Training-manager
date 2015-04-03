@@ -1,5 +1,6 @@
 package com.mgr.training.view.freemarker;
 
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -17,19 +18,23 @@ import com.mgr.training.view.ViewRenderer;
 import com.sun.jersey.api.container.MappableContainerException;
 
 import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import freemarker.template.Version;
 
 /**
  * A {@link ViewRenderer} which renders Freemarker ({@code .ftl}) templates.
  */
 public class FreemarkerViewRenderer implements ViewRenderer {
+
+    private static final Version FREEMARKER_VERSION = Configuration.getVersion();
+    
 	private static class TemplateLoader extends CacheLoader<Class<?>, Configuration> {
 		@Override
 		public Configuration load(Class<?> key) throws Exception {
-			final Configuration configuration = new Configuration();
-			configuration.setObjectWrapper(new DefaultObjectWrapper());
+            final Configuration configuration = new Configuration(FREEMARKER_VERSION);
+            configuration.setObjectWrapper(new DefaultObjectWrapperBuilder(FREEMARKER_VERSION).build());
 			configuration.loadBuiltInEncodingMap();
 			configuration.setDefaultEncoding(Const.CHAR_SET.name());
 			configuration.setClassForTemplateLoading(key, "/");
@@ -37,10 +42,12 @@ public class FreemarkerViewRenderer implements ViewRenderer {
 		}
 	}
 
-	private final LoadingCache<Class<?>, Configuration> configurationCache;
+    private final LoadingCache<Class<?>, Configuration> configurationCache;
 
 	public FreemarkerViewRenderer() {
-		this.configurationCache = CacheBuilder.newBuilder().concurrencyLevel(128).build(new TemplateLoader());
+		this.configurationCache = CacheBuilder.newBuilder()
+                .concurrencyLevel(128)
+                .build(new TemplateLoader());
 	}
 
 	@Override

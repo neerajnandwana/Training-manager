@@ -17,11 +17,11 @@
 	</thead>
 	<tbody>
 		<tr data-ng-repeat="user in users | filter:search | orderBy:'userId'" class="slide-animation">
-			<td><a href="#/user/view/{{user.userId}}">{{user.userId}}</a></td>
+			<td><a data-ng-href="#/user/view/{{user.userId}}">{{user.userId}}</a></td>
 			<td>{{user.displayName}}</td>
 			<td>{{user.createdOn | date:'medium'}}</td>
 			<td>
-				<a href="#/user/edit/{{user.userId}}"><i class="glyphicon glyphicon-pencil"></i></a>
+				<a data-ng-href="#/user/edit/{{user.userId}}"><i class="glyphicon glyphicon-pencil"></i></a>
 				<span>&nbsp;&nbsp;</span>				
 				<a href="#/user" data-ng-click="destroy(user.userId)"  data-confirmation-needed="Are you really want to delete user {{user.userId}}?">
 					<i class="glyphicon glyphicon-trash"></i>

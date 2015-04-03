@@ -4,7 +4,7 @@
 		<span class="note">{{demoUserPassword}}</span>
 		<div class="alert alert-danger" data-ng-show="err.length > 0">{{err}}</div>
 
-		<form name="login" action="dt/login">
+		<form name="login" action="login">
 			<div class="form-group" data-ng-class="{error: login.userId.$invalid}">
 				<label for="email">Email</label> 
 				<input type="text" class="form-control" name="userId" required />
